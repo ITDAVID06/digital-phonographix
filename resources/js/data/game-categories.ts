@@ -266,38 +266,7 @@ export const GAME_CATEGORIES: GameCategory[] = [
         },
         ],
     },
-    {
-        name: "Word List",
-        games: [
         {
-            name: "Fat Cat Sat — Word List",
-            gameType: "wordList",
-            wordList: [
-            "mat","fat","cat","cot","cop","pot","pat","map","sat","mop",
-            "sap","sop","tap","sap","top"
-            ],
-        },
-        {
-            name: "Bug on Jug — Word List",
-            gameType: "wordList",
-            wordList: [
-            "rug","hug","bug","hag","dug","bag","dig","bad","rig","bud","big","jig","mug","jug","gig",
-            "tip","pit","gum","hit","Gus","gab","sip","jab","hiss","job","hip","rip","hat","rat","gas",
-            "rag","dot","dog","hill","rat","Jill","hog","mad","hot"
-            ],
-        },
-        {
-            name: "Ben Bun — Word List",
-            gameType: "wordList",
-            wordList: [
-            "bell","let","net","bun","nut","but","buzz","fuzz","wet","fun","web","zip","vet","mutt",
-            "Sall","tell","pet","jam","nap","wig","wag","nod","sun","feel","pass","met","fell","will",
-            "Ted","get","zap","lip","lap","zig","zag","bit"
-            ],
-        },
-        ],
-    },
-    {
         name: "Reading Stories",
         games: [
         {
@@ -313,10 +282,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 ],
                 // Array of images corresponding to each sentence
                 images: [
-                    "images/FatCatStory/sat.jpg",
-                    "images/FatCatStory/map.jpg",
-                    "images/FatCatStory/mop.jpg",
-                    "images/FatCatStory/cop.jpg",
+                    "images/FatCatStory/sat.png",
+                    "images/FatCatStory/map.png",
+                    "images/FatCatStory/mop.png",
+                    "images/FatCatStory/cop.png",
                     "images/FatCatStory/pat.png",
                 ],
             },
@@ -334,11 +303,11 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 ],
                 // Array of images corresponding to each sentence
                 images: [
-                    "images/BugJugStory/dug.jpg",
-                    "images/BugJugStory/jug.jpg",
-                    "images/BugJugStory/hug.jpg",
-                    "images/BugJugStory/big.jpg",
-                    "images/BugJugStory/rig.jpg",
+                    "images/BugJugStory/dug.png",
+                    "images/BugJugStory/jug.png",
+                    "images/BugJugStory/hug.png",
+                    "images/BugJugStory/big.png",
+                    "images/BugJugStory/rig.png",
                 ],
             },
         },
@@ -363,89 +332,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
         },
         ],
     },
-    {
-         name: "Final Activity",
-        games: [
-            {
-            name: "Mad Cat",
-            gameType: "story",
-            story: {
-                sentences: [
-                "A cat is mad. A dog but him. It is bad to nip at a cat.",
-                "A dog ran. A cat ran. Get a dog! Get a bad dog!",
-                'It is not a bad dog. It is a pet. It is Dan\'s pet. It is Sal. "Get on Sal!"',
-                "Sal got on. It is a hill. It is a big hill.",
-                "Dan and Sal got up a hill.",
-                "On top is Mom.",
-                "Mom is mad at a cat. It is bad to hiss at Sal.",
-                "The End.",
-                ],
-                images: [
-                "images/MadCat/slide1.png",
-                "images/MadCat/slide2.png",
-                "images/MadCat/slide3.png",
-                "images/MadCat/slide4.png",
-                "images/MadCat/slide5.png",
-                "images/MadCat/slide6.png",
-                "images/MadCat/slide7.png",
-                "images/MadCat/the_end.gif",
-                ],
-            },
-            },
-            {
-            name: "Missing Cat",
-            gameType: "story",
-            story: {
-                sentences: [
-                "Jan had a nap on a bed. Jan is up.",
-                "Jan is sad. Tom cat is not on his mat. Tom cat is not on his cot.",
-                "It is a bad cat. It did not get a nap. It got off his cot.",
-                "Jan got on. Jan got up a hill.",
-                '"Tom! Tom cat!" It is a hiss. It is a cat. It is Tom. "Bad cat did not get a nap."',
-                "Jan got Tom cat in a box.",
-                "Tom cat is sad in a box.",
-                'Jan got Tom on his cot. "Get a nap Tom. Get a nap on a cot."',
-                ],
-                images: [
-                "images/MissingCat/slide1.png",
-                "images/MissingCat/slide2.png",
-                "images/MissingCat/slide3.png",
-                "images/MissingCat/slide4.png",
-                "images/MissingCat/slide5.png",
-                "images/MissingCat/slide6.png",
-                "images/MissingCat/slide7.png",
-                "images/MissingCat/slide8.png",
-                ],
-            },
-            },
-            {
-            name: "Fun in the Sun",
-            gameType: "story",
-            story: {
-                sentences: [
-                'Jan is in bed. It is Mom. "Get up Jan!"',
-                '"Sun is up! It is fun."',
-                "Jan sat up. Sun is up.",
-                'Tom sat up. Tom got off his cot. Get a sip Jan. Get a sip Tom. "Yum!"',
-                '"Tom, it is a bad dog and his kid. It is a dog that bit Tom."',
-                "Jan hid Tom in a bag. Tom is sad. It is bad in a bag.",
-                "Sal did kiss Tom. It is not a bad dog, it is a bad bag.",
-                "Dan and Jan and Tom and Sal did run in sun. It is fun!",
-                ],
-                images: [
-                "images/FunInTheSun/slide1.png",
-                "images/FunInTheSun/slide2.png",
-                "images/FunInTheSun/slide3.png",
-                "images/FunInTheSun/slide4.png",
-                "images/FunInTheSun/slide5.png",
-                "images/FunInTheSun/slide6.png",
-                "images/FunInTheSun/slide7.png",
-                "images/FunInTheSun/slide8.png",
-                ],
-            },
-            },
-        ],
-        },
     {
         name: "Auditory Processing",
         games: [
@@ -573,6 +459,120 @@ export const GAME_CATEGORIES: GameCategory[] = [
             ],
             },
         },
+        ],
+    },
+        {
+        name: "Word List",
+        games: [
+        {
+            name: "Fat Cat Sat — Word List",
+            gameType: "wordList",
+            wordList: [
+            "mat","fat","cat","cot","cop","pot","pat","map","sat","mop",
+            "sap","sop","tap","sap","top"
+            ],
+        },
+        {
+            name: "Bug on Jug — Word List",
+            gameType: "wordList",
+            wordList: [
+            "rug","hug","bug","hag","dug","bag","dig","bad","rig","bud","big","jig","mug","jug","gig",
+            "tip","pit","gum","hit","Gus","gab","sip","jab","hiss","job","hip","rip","hat","rat","gas",
+            "rag","dot","dog","hill","rat","Jill","hog","mad","hot"
+            ],
+        },
+        {
+            name: "Ben Bun — Word List",
+            gameType: "wordList",
+            wordList: [
+            "bell","let","net","bun","nut","but","buzz","fuzz","wet","fun","web","zip","vet","mutt",
+            "Sall","tell","pet","jam","nap","wig","wag","nod","sun","feel","pass","met","fell","will",
+            "Ted","get","zap","lip","lap","zig","zag","bit"
+            ],
+        },
+        ],
+    },
+        {
+        name: "Final Activity",
+        games: [
+            {
+            name: "Mad Cat",
+            gameType: "story",
+            story: {
+                sentences: [
+                "A cat is mad. A dog bit him. It is bad to nip at a cat.",
+                "A dog ran. A cat ran. Get a dog! Get a bad dog!",
+                'It is not a bad dog. It is a pet. It is Dan\'s pet. It is Sal. "Get on Sal!"',
+                "Sal got on. It is a hill. It is a big hill.",
+                "Dan and Sal got up a hill.",
+                "On top is Mom.",
+                "Mom is mad at a cat. It is bad to hiss at Sal.",
+                "The End.",
+                ],
+                images: [
+                "images/MadCat/slide1.png",
+                "images/MadCat/slide2.png",
+                "images/MadCat/slide3.png",
+                "images/MadCat/slide4.png",
+                "images/MadCat/slide5.png",
+                "images/MadCat/slide6.png",
+                "images/MadCat/slide7.png",
+                "images/MadCat/the_end.gif",
+                ],
+            },
+            },
+            {
+            name: "Missing Cat",
+            gameType: "story",
+            story: {
+                sentences: [
+                "Jan had a nap on a bed. Jan is up.",
+                "Jan is sad. Tom cat is not on his mat. Tom cat is not on his cot.",
+                "It is a bad cat. It did not get a nap. It got off his cot.",
+                "Jan got on. Jan got up a hill.",
+                '"Tom! Tom cat!" It is a hiss. It is a cat. It is Tom. "Bad cat did not get a nap."',
+                "Jan got Tom cat in a box.",
+                "Tom cat is sad in a box.",
+                'Jan got Tom on his cot. "Get a nap Tom. Get a nap on a cot."',
+                ],
+                images: [
+                "images/MissingCat/slide1.png",
+                "images/MissingCat/slide2.png",
+                "images/MissingCat/slide3.png",
+                "images/MissingCat/slide4.png",
+                "images/MissingCat/slide5.png",
+                "images/MissingCat/slide6.png",
+                "images/MissingCat/slide7.png",
+                "images/MissingCat/slide8.png",
+                ],
+            },
+            },
+            {
+            name: "Fun in the Sun",
+            gameType: "story",
+            story: {
+                sentences: [
+                'Jan is in bed. It is Mom. "Get up Jan!"',
+                '"Sun is up! It is fun."',
+                "Jan sat up. Sun is up.",
+                'Tom sat up. Tom got off his cot. Get a sip Jan. Get a sip Tom. "Yum!"',
+                '"Tom, it is a bad dog and his kid. It is a dog that bit Tom."',
+                "Jan hid Tom in a bag. Tom is sad. It is bad in a bag.",
+                "Sal did kiss Tom. It is not a bad dog, it is a bad bag.",
+                "Dan and Jan and Tom and Sal did run in sun. It is fun!",
+                ],
+                images: [
+                "images/FunInTheSun/slide1.png",
+                "images/FunInTheSun/slide2.png",
+                "images/FunInTheSun/slide3.png",
+                "images/FunInTheSun/slide4.png",
+                "images/FunInTheSun/slide5.png",
+                "images/FunInTheSun/slide6.png",
+                "images/FunInTheSun/slide7.png",
+                "images/FunInTheSun/slide8.png",
+                ],
+            },
+            },
         ],
     },
 ]

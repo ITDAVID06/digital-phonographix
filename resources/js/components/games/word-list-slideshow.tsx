@@ -83,7 +83,7 @@ export default function WordListSlideshow({
             className={cn(
               "w-[22rem] md:w-[78rem] h-[16rem] md:h-[22rem]",
               "flex items-center justify-center rounded-2xl border shadow-inner",
-              "text-6xl md:text-[16rem] font-bold tracking-tight select-none text-center",
+              "text-6xl md:text-[12rem] font-bold tracking-tight select-none text-center",
               "border-border bg-background"
             )}
             aria-label={`Word ${current}`}

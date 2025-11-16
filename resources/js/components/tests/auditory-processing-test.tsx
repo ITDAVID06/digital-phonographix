@@ -145,23 +145,23 @@ export default function AuditoryProcessingTest({
       response.trim().length > 0 ? norm(response) === norm(it.expected) : null
 
     return (
-      <li key={it.baseWord} className="grid grid-cols-1 md:grid-cols-[1fr,auto] items-center gap-3">
+      <li key={it.baseWord} className="space-y-2">
         <form
           onSubmit={(e) => { e.preventDefault(); submitSingle(part, it) }}
-          className="contents"
+          className="space-y-2"
         >
-          <div className="flex flex-col gap-1">
-            <div className="flex items-baseline justify-between">
-              <div className="text-foreground/80">
-                <span className="mr-3 text-sm font-medium text-foreground/60">#{idx + 1}</span>
-                <span className="font-semibold tracking-wide">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+              <div className="text-foreground/80 text-sm sm:text-base">
+                <span className="mr-2 text-xs sm:text-sm font-medium text-foreground/60">#{idx + 1}</span>
+                <span className="font-semibold tracking-wide break-words">
                   {makePrompt(it.baseWord, it.removed)}
                 </span>
               </div>
               {submitted && (
                 <span
                   aria-live="polite"
-                  className={cn("text-xs font-semibold", exact ? "text-green-600" : "text-red-600")}
+                  className={cn("text-xs font-semibold whitespace-nowrap", exact ? "text-green-600" : "text-red-600")}
                 >
                   {exact ? "match" : "no match"}
                 </span>
@@ -169,7 +169,7 @@ export default function AuditoryProcessingTest({
             </div>
 
             {/* Teacher input + light expected hint */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <label className="sr-only" htmlFor={`${key}-input`}>
                 Student response for {it.baseWord} without {it.removed}
               </label>
@@ -177,21 +177,22 @@ export default function AuditoryProcessingTest({
                 id={`${key}-input`}
                 value={response}
                 onChange={(e) => update({ response: e.target.value, submitted })}
-                placeholder="Teacher enters the student's word"
-                className="flex-1 rounded-lg border px-3 py-2 bg-background"
+                placeholder="Enter word"
+                className="flex-1 rounded-lg border px-3 py-2 bg-background text-sm sm:text-base min-w-0"
                 autoComplete="off"
                 inputMode="text"
               />
               <Button
                 type="submit"
                 disabled={saving[key] === true || response.trim().length === 0}
-                className="min-w-28"
+                className="w-full sm:w-auto sm:min-w-24 shrink-0"
+                size="sm"
               >
                 {saving[key] ? "Saving..." : "Submit"}
               </Button>
             </div>
 
-            <div className="text-xs text-foreground/50 mt-1">
+            <div className="text-xs text-foreground/50">
               expected: <span className="font-mono">{it.expected}</span>
             </div>
           </div>
@@ -201,28 +202,41 @@ export default function AuditoryProcessingTest({
   }
 
   return (
-    <div className={cn("space-y-8", className)}>
+    <div className={cn("space-y-6 sm:space-y-8 max-w-7xl mx-auto px-2 sm:px-4", className)}>
       {/* Header with shared buttons */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl md:text-3xl font-bold">Auditory Processing Test</h2>
-        <div className="flex gap-2">
-          <Button size="sm" variant="secondary" onClick={resetAll} title="Reset all">
-            <RotateCcw className="w-4 h-4" />
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">Auditory Processing Test</h2>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button 
+            size="sm" 
+            variant="secondary" 
+            onClick={resetAll} 
+            title="Reset all"
+            className="flex-1 sm:flex-none"
+          >
+            <RotateCcw className="w-4 h-4 sm:mr-0" />
+            <span className="sm:hidden ml-2">Reset</span>
           </Button>
-          <Button size="sm" onClick={submitAll} title="Submit all responses" disabled={filledCount === 0}>
+          <Button 
+            size="sm" 
+            onClick={submitAll} 
+            title="Submit all responses" 
+            disabled={filledCount === 0}
+            className="flex-1 sm:flex-none"
+          >
             Submit All{filledCount ? ` (${filledCount})` : ""}
           </Button>
         </div>
       </div>
 
-      {/* Three-part grid (1 row on small, 3 columns on xl for parity) */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+      {/* Three-part grid (1 column on small, 2 on md, 3 on xl) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 items-start">
         {/* PART ONE */}
-        <Card className="p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl h-full flex flex-col">
-          <header className="mb-4">
-            <h3 className="text-xl md:text-2xl font-semibold">Part One</h3>
+        <Card className="p-4 sm:p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl h-full flex flex-col">
+          <header className="mb-3 sm:mb-4">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Part One</h3>
           </header>
-          <ol className="space-y-3 flex-1">
+          <ol className="space-y-4 sm:space-y-3 flex-1">
             {PART_ONE.map((it, idx) =>
               renderRow(
                 1,
@@ -236,11 +250,11 @@ export default function AuditoryProcessingTest({
         </Card>
 
         {/* PART TWO */}
-        <Card className="p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl h-full flex flex-col">
-          <header className="mb-4">
-            <h3 className="text-xl md:text-2xl font-semibold">Part Two</h3>
+        <Card className="p-4 sm:p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl h-full flex flex-col">
+          <header className="mb-3 sm:mb-4">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Part Two</h3>
           </header>
-          <ol className="space-y-3 flex-1">
+          <ol className="space-y-4 sm:space-y-3 flex-1">
             {PART_TWO.map((it, idx) =>
               renderRow(
                 2,
@@ -254,11 +268,11 @@ export default function AuditoryProcessingTest({
         </Card>
 
         {/* PART THREE */}
-        <Card className="p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl h-full flex flex-col">
-          <header className="mb-4">
-            <h3 className="text-xl md:text-2xl font-semibold">Part Three</h3>
+        <Card className="p-4 sm:p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl h-full flex flex-col md:col-span-2 xl:col-span-1">
+          <header className="mb-3 sm:mb-4">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Part Three</h3>
           </header>
-          <ol className="space-y-3 flex-1">
+          <ol className="space-y-4 sm:space-y-3 flex-1">
             {PART_THREE.map((it, idx) =>
               renderRow(
                 3,
