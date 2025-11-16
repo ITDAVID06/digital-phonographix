@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Laravel 11 + React app to Azure Web App - projectflowbycusgabby
+name: Build and deploy Laravel 11 + React app to Azure Web App - digitalphonographix
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
       # -----------------------------
       # CHECKOUT CODE
       # -----------------------------
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       # -----------------------------
@@ -28,8 +28,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: mbstring, intl, pdo_mysql, bcmath, openssl
+          php-version: '8.3'
+          extensions: mbstring, intl, pdo_mysql, bcmath
           coverage: none
 
       - name: Cache Composer dependencies
@@ -40,8 +40,8 @@ jobs:
           restore-keys: |
             composer-${{ runner.os }}-
 
-      - name: Install Composer dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-dev
 
       # -----------------------------
       # NODE + VITE
@@ -59,19 +59,19 @@ jobs:
           restore-keys: |
             node-${{ runner.os }}-
 
-      - name: Install NPM dependencies
-        run: npm ci
+      - name: Install Node dependencies
+        run: npm install
 
-      - name: Build frontend (Vite)
+      - name: Build frontend (Vite/React)
         run: npm run build
 
       # -----------------------------
-      # PACKAGE ARTIFACT
+      # PACKAGE ARTIFACT (SMALLER ZIP)
       # -----------------------------
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: laravel-app
+          name: laravel-react-app
           path: |
             .
             !node_modules/
@@ -88,31 +88,22 @@ jobs:
       contents: read
 
     steps:
-      # -----------------------------
-      # DOWNLOAD BUILD ARTIFACT
-      # -----------------------------
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: laravel-app
+          name: laravel-react-app
 
-      # -----------------------------
-      # LOGIN TO AZURE
-      # -----------------------------
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_D864475FFC814400AE1E3C34429CB156 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A4B5931CEBA14C6490E19B54D578A08A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8BA63D78BA60452DBAAF72E90055A428 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_87BBA74E88384FAB96CD61FF4D4E4EBF }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2EA6E3EC589F4A4D9C8741F7C07BBCDD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_38129990990D4324B6AA911E41FB33E3 }}
 
-      # -----------------------------
-      # DEPLOY TO AZURE
-      # -----------------------------
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'projectflowbycusgabby'
+          app-name: 'digitalphonographix'
           slot-name: 'production'
           package: .
 
@@ -137,4 +128,5 @@ jobs:
 
 
           
+
 
