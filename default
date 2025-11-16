@@ -3,40 +3,44 @@ server {
     listen 8080;
     listen [::]:8080;
 
-    # Root should be your Laravel public folder
+    # Laravel public directory
     root /home/site/wwwroot/public;
     index index.php index.html index.htm;
 
-    servername ;
+    # Fix: correct domain directive
+    server_name _;
+
     port_in_redirect off;
 
     # Laravel front controller
     location / {
         try_files $uri $uri/ /index.php$is_args$args;
-        #index  index.php index.html index.htm hostingstart.html;
     }
 
     # Optional: reduce noise
     location = /favicon.ico { log_not_found off; access_log off; }
     location = /robots.txt  { log_not_found off; access_log off; }
 
-    # Disable .git
-    location ~ /.git {
+    # Block .git
+    location ~ /\.git {
         deny all;
         access_log off;
         log_not_found off;
     }
 
     # PHP handling
-    location ~* [^/].php(/|$) {
-        fastcgi_split_path_info ^(.+?.[Pp][Hh][Pp])(|/.*)$;
-        fastcgi_pass 127.0.0.1:9000;
+    location ~* \.php$ {
         include fastcgi_params;
-        fastcgi_param HTTP_PROXY "";
+
+        fastcgi_pass 127.0.0.1:9000;
+
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param QUERY_STRING $query_string;
+        fastcgi_param HTTP_PROXY "";
+
         fastcgi_intercept_errors on;
+
         fastcgi_connect_timeout 300;
         fastcgi_send_timeout 3600;
         fastcgi_read_timeout 3600;
