@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PreTest extends Model
+class Grade extends Model
 {
     use HasFactory;
 
@@ -13,8 +13,7 @@ class PreTest extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'pre_test_student')
-            ->withPivot(['user_id', 'raw_score', 'calculated_score'])
+        return $this->belongsToMany(Student::class, 'grade_student')
             ->withTimestamps();
     }
 }

@@ -34,7 +34,6 @@ class StudentSeeder extends Seeder
             Student::firstOrCreate(
                 ['name' => $student],
                 [
-                    'grade' => $grades[array_rand($grades)],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

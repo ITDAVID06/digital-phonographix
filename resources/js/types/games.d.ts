@@ -28,16 +28,24 @@ export type SoundBingoData = {
   cards: BingoCard[]
 }
 
+/** NEW: Redirect config for chaining games */
+export type GameRedirectConfig = {
+  categoryName: string   // e.g. "Reading Stories"
+  gameName: string       // e.g. "Fat Cat Story"
+}
+
 export type GameData = {
-    name: string
-    words?: WordData[]
-    story?: Story
-    isStory?: boolean
-    auditoryProcessing?: AuditoryProcessingData
-    soundBingo?: SoundBingoData
-    wordList?: string[]
-    gameType?: "wordBuilding" | "story" | "auditoryProcessing" | "soundBingo" | "wordList"
-    // NEW for word list:
+  name: string
+  words?: WordData[]
+  story?: Story
+  isStory?: boolean
+  auditoryProcessing?: AuditoryProcessingData
+  soundBingo?: SoundBingoData
+  wordList?: string[]
+  gameType?: "wordBuilding" | "story" | "auditoryProcessing" | "soundBingo" | "wordList"
+
+  /** NEW: where to go after finishing this game */
+  redirectTo?: GameRedirectConfig
 }
 
 export type GameCategory = {

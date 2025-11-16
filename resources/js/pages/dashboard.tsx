@@ -38,7 +38,7 @@ export default function Dashboard() {
       <Head title="Dashboard" />
 
       <main className="flex-1 from-background via-accent/10 to-tertiary/20 flex items-center justify-center p-6">
-        <div className="max-w-5xl w-full">
+        <div className="max-w-6xl w-full">
 
           {/* Header */}
           <header className="text-center mb-10 relative">
@@ -57,7 +57,7 @@ export default function Dashboard() {
           </header>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pre-test */}
             <div onClick={() => handleOpenSelectModal("pre-test")} className="group cursor-pointer">
               <Card className="p-6 h-full transition-all border-2 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-yellow-50 to-pink-50">
@@ -102,6 +102,21 @@ export default function Dashboard() {
                 </div>
               </Card>
             </div>
+
+            {/* Instructions */}
+            <Link href="/instructions" className="group">
+              <Card className="p-6 h-full transition-all border-2 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-br from-purple-50 to-indigo-50">
+                <div className="flex flex-col h-full">
+                  <h2 className="text-2xl font-semibold mb-2 text-purple-700">Instructions</h2>
+                  <p className="text-foreground/70 flex-1">
+                    Complete teacher guide for Digital Phono-Graphix.
+                  </p>
+                  <Button className="mt-4 group-hover:translate-x-0.5 transition-transform w-fit bg-purple-400 hover:bg-purple-500 text-white">
+                    View Guide
+                  </Button>
+                </div>
+              </Card>
+            </Link>
           </div>
 
           {/* Footer */}

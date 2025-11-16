@@ -7,10 +7,13 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "The Fat Cat Sat",
             gameType: "wordBuilding",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Fat Cat Story",
+            },
             words: [
             {
                 word: "cat",
-                // TODO: Replace this placeholder with actual image for CAT word
                 imagePlaceholder: "images/FatCatWord/cat.png",
                 letters: [
                 { id: "c-0", letter: "c", originalIndex: 0 },
@@ -20,7 +23,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "fat",
-                // TODO: Replace this placeholder with actual image for FAT word
                 imagePlaceholder: "images/FatCatWord/fat.png",
                 letters: [
                 { id: "f-0", letter: "f", originalIndex: 0 },
@@ -30,7 +32,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "cap",
-                // TODO: Replace this placeholder with actual image for CAT word
                 imagePlaceholder: "images/FatCatWord/cap.png",
                 letters: [
                 { id: "c-0", letter: "c", originalIndex: 0 },
@@ -40,7 +41,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "mop",
-                // TODO: Replace this placeholder with actual image for MOP word
                 imagePlaceholder: "images/FatCatWord/mop.png",
                 letters: [
                 { id: "m-0", letter: "m", originalIndex: 0 },
@@ -50,7 +50,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "top",
-                // TODO: Replace this placeholder with actual image for TOP word
                 imagePlaceholder: "images/FatCatWord/top.png",
                 letters: [
                 { id: "t-3", letter: "t", originalIndex: 0 },
@@ -60,7 +59,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "cop",
-                // TODO: Replace this placeholder with actual image for COP word
                 imagePlaceholder: "images/FatCatWord/cop.png",
                 letters: [
                 { id: "c-1", letter: "c", originalIndex: 0 },
@@ -70,7 +68,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "map",
-                // TODO: Replace this placeholder with actual image for MAP word
                 imagePlaceholder: "images/FatCatWord/map.png",
                 letters: [
                 { id: "m-1", letter: "m", originalIndex: 0 },
@@ -80,7 +77,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "tap",
-                // TODO: Replace this placeholder with actual image for TAP word
                 imagePlaceholder: "images/FatCatWord/tap.png",
                 letters: [
                 { id: "t-4", letter: "t", originalIndex: 0 },
@@ -93,10 +89,13 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "The Bug on Jug",
             gameType: "wordBuilding",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Bug on Jug Story",
+            },
             words: [
             {
                 word: "bug",
-                // TODO: Replace this placeholder with actual image for BUG word
                 imagePlaceholder: "images/BugJugWord/bug.png",
                 letters: [
                 { id: "b-0", letter: "b", originalIndex: 0 },
@@ -106,7 +105,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "jug",
-                // TODO: Replace this placeholder with actual image for JUG word
                 imagePlaceholder: "images/BugJugWord/jug.png",
                 letters: [
                 { id: "j-0", letter: "j", originalIndex: 0 },
@@ -116,7 +114,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "dig",
-                // TODO: Replace this placeholder with actual image for DIG word
                 imagePlaceholder: "images/BugJugWord/dig.png",
                 letters: [
                 { id: "d-0", letter: "d", originalIndex: 0 },
@@ -126,7 +123,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "big",
-                // TODO: Replace this placeholder with actual image for BIG word
                 imagePlaceholder: "images/BugJugWord/big.png",
                 letters: [
                 { id: "b-1", letter: "b", originalIndex: 0 },
@@ -136,7 +132,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "rig",
-                // TODO: Replace this placeholder with actual image for RIG word
                 imagePlaceholder: "images/BugJugWord/rig.png",
                 letters: [
                 { id: "r-0", letter: "r", originalIndex: 0 },
@@ -146,7 +141,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "rug",
-                // TODO: Replace this placeholder with actual image for RUG word
                 imagePlaceholder: "images/BugJugWord/rug.png",
                 letters: [
                 { id: "r-1", letter: "r", originalIndex: 0 },
@@ -156,7 +150,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "hug",
-                // TODO: Replace this placeholder with actual image for HUG word
                 imagePlaceholder: "images/BugJugWord/hug.png",
                 letters: [
                 { id: "h-0", letter: "h", originalIndex: 0 },
@@ -166,7 +159,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "jig",
-                // TODO: Replace this placeholder with actual image for JIG word
                 imagePlaceholder: "images/BugJugWord/jig.png",
                 letters: [
                 { id: "j-1", letter: "j", originalIndex: 0 },
@@ -179,10 +171,13 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "The Ben Bun",
             gameType: "wordBuilding",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Ben Bun Story",
+            },
             words: [
             {
                 word: "wet",
-                // TODO: Replace this placeholder with actual image for WET word
                 imagePlaceholder: "images/BenBunWord/wet.png",
                 letters: [
                 { id: "w-0", letter: "w", originalIndex: 0 },
@@ -192,7 +187,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "zip",
-                // TODO: Replace this placeholder with actual image for ZIP word
                 imagePlaceholder: "images/BenBunWord/zip.png",
                 letters: [
                 { id: "z-0", letter: "z", originalIndex: 0 },
@@ -202,7 +196,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "web",
-                // TODO: Replace this placeholder with actual image for WEB word
                 imagePlaceholder: "images/BenBunWord/web.png",
                 letters: [
                 { id: "w-1", letter: "w", originalIndex: 0 },
@@ -212,7 +205,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "mutt",
-                // TODO: Replace this placeholder with actual image for MUTT word
                 imagePlaceholder: "images/BenBunWord/mutt.png",
                 letters: [
                 { id: "m-2", letter: "m", originalIndex: 0 },
@@ -223,7 +215,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "bun",
-                // TODO: Replace this placeholder with actual image for BUN word
                 imagePlaceholder: "images/BenBunWord/bun.png",
                 letters: [
                 { id: "b-3", letter: "b", originalIndex: 0 },
@@ -233,7 +224,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "net",
-                // TODO: Replace this placeholder with actual image for NET word
                 imagePlaceholder: "images/BenBunWord/net.png",
                 letters: [
                 { id: "n-1", letter: "n", originalIndex: 0 },
@@ -243,7 +233,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "vet",
-                // TODO: Replace this placeholder with actual image for VET word
                 imagePlaceholder: "images/BenBunWord/vet.png",
                 letters: [
                 { id: "v-0", letter: "v", originalIndex: 0 },
@@ -253,7 +242,6 @@ export const GAME_CATEGORIES: GameCategory[] = [
             },
             {
                 word: "bell",
-                // TODO: Replace this placeholder with actual image for BELL word
                 imagePlaceholder: "images/BenBunWord/bell.png",
                 letters: [
                 { id: "b-5", letter: "b", originalIndex: 0 },
@@ -266,68 +254,73 @@ export const GAME_CATEGORIES: GameCategory[] = [
         },
         ],
     },
+    {
+    name: "Reading Stories",
+    games: [
         {
-        name: "Reading Stories",
-        games: [
-        {
-            name: "Fat Cat Story",
-            gameType: "story",
-            story: {
-                sentences: [
-                    "Fat cat sat on a mat.",
-                    "Fat cat sat on a map.",
-                    "Fat cat sat on a mop.",
-                    "Fat cat sat on a cop.",
-                    "Fat cat sat on Pat.",
-                ],
-                // Array of images corresponding to each sentence
-                images: [
-                    "images/FatCatStory/sat.png",
-                    "images/FatCatStory/map.png",
-                    "images/FatCatStory/mop.png",
-                    "images/FatCatStory/cop.png",
-                    "images/FatCatStory/pat.png",
-                ],
+        name: "Fat Cat Story",
+        gameType: "story",
+        redirectTo: {
+            categoryName: "Word Building",
+            gameName: "The Bug on Jug",
+        },
+        story: {
+            sentences: [
+            "Fat cat sat on a mat.",
+            "Fat cat sat on a map.",
+            "Fat cat sat on a mop.",
+            "Fat cat sat on a cop.",
+            "Fat cat sat on Pat.",
+            ],
+            images: [
+                "images/FatCatStory/sat.png",
+                "images/FatCatStory/map.png",
+                "images/FatCatStory/mop.png",
+                "images/FatCatStory/cop.png",
+                "images/FatCatStory/pat.png",
+            ],
             },
         },
         {
             name: "Bug on Jug Story",
             gameType: "story",
+            redirectTo: {
+                categoryName: "Word Building",
+                gameName: "The Ben Bun",
+            },
             story: {
-                sentences: [
-                    "Big bug dug",
-                    "Big bug dug up a jug",
-                    "Big bug did hug a jug",
-                    "Big bug did jig on a jug",
-                    "Big bug did sit on a jug.",
-                ],
-                // Array of images corresponding to each sentence
-                images: [
-                    "images/BugJugStory/dug.png",
-                    "images/BugJugStory/jug.png",
-                    "images/BugJugStory/hug.png",
-                    "images/BugJugStory/big.png",
-                    "images/BugJugStory/rig.png",
-                ],
+            sentences: [
+                "Big bug dug",
+                "Big bug dug up a jug",
+                "Big bug did hug a jug",
+                "Big bug did jig on a jug",
+                "Big bug did sit on a jug.",
+            ],
+            images: [
+                "images/BugJugStory/dug.png",
+                "images/BugJugStory/jug.png",
+                "images/BugJugStory/hug.png",
+                "images/BugJugStory/big.png",
+                "images/BugJugStory/rig.png",
+            ],
             },
         },
         {
             name: "Ben Bun Story",
             gameType: "story",
             story: {
-                sentences: [
-                    "Ben Bun is wet.", 
-                    "Buzz... Ben Bun got bit.", 
-                    "Ben Bun is in a net.", 
-                    "Ben Bun is at a vet."
-                ],
-                // Array of images corresponding to each sentence
-                images: [
-                    "images/BenBunStory/wet.png",
-                    "images/BenBunStory/buzz.png",
-                    "images/BenBunStory/net.png",
-                    "images/BenBunStory/vet.png",
-                ],
+            sentences: [
+                "Ben Bun is wet.",
+                "Buzz... Ben Bun got bit.",
+                "Ben Bun is in a net.",
+                "Ben Bun is at a vet.",
+            ],
+            images: [
+                "images/BenBunStory/wet.png",
+                "images/BenBunStory/buzz.png",
+                "images/BenBunStory/net.png",
+                "images/BenBunStory/vet.png",
+            ],
             },
         },
         ],
@@ -338,6 +331,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Fat Cat Sat",
             gameType: "auditoryProcessing",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Fat Cat Story",
+            },
             auditoryProcessing: {
             letters: ["o", "t", "p", "c", "a", "f", "m", "s", "p"],
             correctWords: [
@@ -363,6 +360,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Bug on Jug",
             gameType: "auditoryProcessing",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Bug on Jug Story",
+            },
             auditoryProcessing: {
             letters: ["b", "u", "r", "g", "h", "j", "i", "d"],
             correctWords: ["rug", "bug", "dug", "dig", "rig", "big", "jig", "jug", "hug", "bud"],
@@ -371,6 +372,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Ben Bun",
             gameType: "auditoryProcessing",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Ben Bun Story",
+            },
             auditoryProcessing: {
             letters: ["e", "e", "t", "w", "u", "b", "n", "v", "zz", "ll"],
             correctWords: ["let", "wet", "vet", "net", "nut", "but", "buzz", "bun", "Ben", "bell"],
@@ -384,6 +389,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Fat Cat",
             gameType: "soundBingo",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Fat Cat Story",
+            },
             soundBingo: {
             cards: [
                 {
@@ -410,6 +419,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Bug on Jug",
             gameType: "soundBingo",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Bug on Jug Story",
+            },
             soundBingo: {
             cards: [
                 {
@@ -436,6 +449,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Ben Bun",
             gameType: "soundBingo",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Ben Bun Story",
+            },
             soundBingo: {
             cards: [
                 {
@@ -461,12 +478,16 @@ export const GAME_CATEGORIES: GameCategory[] = [
         },
         ],
     },
-        {
+    {
         name: "Word List",
         games: [
         {
             name: "Fat Cat Sat — Word List",
             gameType: "wordList",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Fat Cat Story",
+            },
             wordList: [
             "mat","fat","cat","cot","cop","pot","pat","map","sat","mop",
             "sap","sop","tap","sap","top"
@@ -475,6 +496,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Bug on Jug — Word List",
             gameType: "wordList",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Bug on Jug Story",
+            },
             wordList: [
             "rug","hug","bug","hag","dug","bag","dig","bad","rig","bud","big","jig","mug","jug","gig",
             "tip","pit","gum","hit","Gus","gab","sip","jab","hiss","job","hip","rip","hat","rat","gas",
@@ -484,6 +509,10 @@ export const GAME_CATEGORIES: GameCategory[] = [
         {
             name: "Ben Bun — Word List",
             gameType: "wordList",
+            redirectTo: {
+            categoryName: "Reading Stories",
+            gameName: "Ben Bun Story",
+            },
             wordList: [
             "bell","let","net","bun","nut","but","buzz","fuzz","wet","fun","web","zip","vet","mutt",
             "Sall","tell","pet","jam","nap","wig","wag","nod","sun","feel","pass","met","fell","will",
@@ -492,14 +521,14 @@ export const GAME_CATEGORIES: GameCategory[] = [
         },
         ],
     },
-        {
+    {
         name: "Final Activity",
         games: [
-            {
+        {
             name: "Mad Cat",
             gameType: "story",
             story: {
-                sentences: [
+            sentences: [
                 "A cat is mad. A dog bit him. It is bad to nip at a cat.",
                 "A dog ran. A cat ran. Get a dog! Get a bad dog!",
                 'It is not a bad dog. It is a pet. It is Dan\'s pet. It is Sal. "Get on Sal!"',
@@ -508,8 +537,8 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 "On top is Mom.",
                 "Mom is mad at a cat. It is bad to hiss at Sal.",
                 "The End.",
-                ],
-                images: [
+            ],
+            images: [
                 "images/MadCat/slide1.png",
                 "images/MadCat/slide2.png",
                 "images/MadCat/slide3.png",
@@ -518,14 +547,14 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 "images/MadCat/slide6.png",
                 "images/MadCat/slide7.png",
                 "images/MadCat/the_end.gif",
-                ],
+            ],
             },
-            },
-            {
+        },
+        {
             name: "Missing Cat",
             gameType: "story",
             story: {
-                sentences: [
+            sentences: [
                 "Jan had a nap on a bed. Jan is up.",
                 "Jan is sad. Tom cat is not on his mat. Tom cat is not on his cot.",
                 "It is a bad cat. It did not get a nap. It got off his cot.",
@@ -534,8 +563,8 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 "Jan got Tom cat in a box.",
                 "Tom cat is sad in a box.",
                 'Jan got Tom on his cot. "Get a nap Tom. Get a nap on a cot."',
-                ],
-                images: [
+            ],
+            images: [
                 "images/MissingCat/slide1.png",
                 "images/MissingCat/slide2.png",
                 "images/MissingCat/slide3.png",
@@ -544,14 +573,14 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 "images/MissingCat/slide6.png",
                 "images/MissingCat/slide7.png",
                 "images/MissingCat/slide8.png",
-                ],
+            ],
             },
-            },
-            {
+        },
+        {
             name: "Fun in the Sun",
             gameType: "story",
             story: {
-                sentences: [
+            sentences: [
                 'Jan is in bed. It is Mom. "Get up Jan!"',
                 '"Sun is up! It is fun."',
                 "Jan sat up. Sun is up.",
@@ -560,8 +589,8 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 "Jan hid Tom in a bag. Tom is sad. It is bad in a bag.",
                 "Sal did kiss Tom. It is not a bad dog, it is a bad bag.",
                 "Dan and Jan and Tom and Sal did run in sun. It is fun!",
-                ],
-                images: [
+            ],
+            images: [
                 "images/FunInTheSun/slide1.png",
                 "images/FunInTheSun/slide2.png",
                 "images/FunInTheSun/slide3.png",
@@ -570,9 +599,9 @@ export const GAME_CATEGORIES: GameCategory[] = [
                 "images/FunInTheSun/slide6.png",
                 "images/FunInTheSun/slide7.png",
                 "images/FunInTheSun/slide8.png",
-                ],
+            ],
             },
-            },
+        },
         ],
     },
 ]

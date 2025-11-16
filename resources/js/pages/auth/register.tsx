@@ -87,7 +87,7 @@ export default function Register() {
                             <>
                                 {/* Name Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="name" className="text-primary-foreground">Full Name</Label>
+                                    <Label htmlFor="name" className="text-foreground">Full Name</Label>
                                     <Input
                                         id="name"
                                         type="text"
@@ -97,14 +97,14 @@ export default function Register() {
                                         autoComplete="name"
                                         name="name"
                                         placeholder="Enter your full name"
-                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-primary-foreground"
+                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-foreground"
                                     />
                                     <InputError message={errors.name} />
                                 </div>
 
                                 {/* Email Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="email" className="text-primary-foreground">Email Address</Label>
+                                    <Label htmlFor="email" className="text-foreground">Email Address</Label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -113,14 +113,14 @@ export default function Register() {
                                         autoComplete="email"
                                         name="email"
                                         placeholder="email@example.com"
-                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-primary-foreground"
+                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-foreground"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
 
                                 {/* Password Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="password" className="text-primary-foreground">Password</Label>
+                                    <Label htmlFor="password" className="text-foreground">Password</Label>
                                     <Input
                                         id="password"
                                         type="password"
@@ -129,14 +129,14 @@ export default function Register() {
                                         autoComplete="new-password"
                                         name="password"
                                         placeholder="Password"
-                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-primary-foreground"
+                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-foreground"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
 
                                 {/* Confirm Password */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="password_confirmation" className="text-primary-foreground">
+                                    <Label htmlFor="password_confirmation" className="text-foreground">
                                         Confirm Password
                                     </Label>
                                     <Input
@@ -147,7 +147,7 @@ export default function Register() {
                                         autoComplete="new-password"
                                         name="password_confirmation"
                                         placeholder="Confirm password"
-                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-primary-foreground"
+                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-foreground"
                                     />
                                     <InputError message={errors.password_confirmation} />
                                 </div>

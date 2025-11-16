@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TestController extends Controller
 {
@@ -12,7 +14,12 @@ class TestController extends Controller
     public function index(Request $request)
     {
         $variant = $request->query('variant', 'pretest');
-        return inertia('tests/code/teacher/Index', [
+        $studentId = $request->query('student_id');
+
+        $student = $studentId ? Student::find($studentId) : null;
+
+        return Inertia::render('tests/code/teacher/Index', [
+            'student' => $student,
             'variant' => $variant,
         ]);
     }

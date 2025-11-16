@@ -1,6 +1,6 @@
 // resources/js/pages/tests/code/teacher.tsx
 import * as React from "react"
-import { usePage } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RotateCcw } from "lucide-react"
@@ -19,6 +19,7 @@ function useVariantFromUrl(defaultValue: Variant = "pretest"): Variant {
 
 export default function TeacherCodeIndex() {
     const variantParam = useVariantFromUrl()
+    const { student } = usePage().props as any // ✅ now actually set from backend
 
     const [knownMap, setKnownMap] = React.useState<Record<string, boolean>>(
         () => buildMap(STUDENT_ORDER)
@@ -37,7 +38,12 @@ export default function TeacherCodeIndex() {
     const setOne = (g: string, val: boolean) =>
         setKnownMap((prev) => ({ ...prev, [g]: val }))
 
-    const saveAll = async () => {
+    const saveAll = () => {
+        if (!student) {
+        console.error("No student found in props")
+        return
+        }
+
         const now = Date.now()
         const payload: CodeKnowledgeResult[] = STUDENT_ORDER.map((g) => ({
         variant: variantParam,
@@ -46,13 +52,29 @@ export default function TeacherCodeIndex() {
         examples: META[g] ?? "",
         timestamp: now,
         }))
+
         setSaving(true)
-        try {
-        // TODO: replace with your API call (e.g., Inertia.post/axios/fetch)
-        console.log("code-knowledge saveAll()", payload)
-        } finally {
-        setSaving(false)
+
+        router.post(
+        "/tests/code-knowledge",
+        {
+            variant: variantParam,
+            student_id: student.id,
+            results: payload,
+        },
+        {
+            preserveScroll: true,
+            onFinish: () => setSaving(false),
+            onSuccess: () => {
+            console.log("Code knowledge test saved successfully")
+            alert("Code knowledge test saved successfully!")
+            },
+            onError: (errors) => {
+            console.error("Error saving code knowledge test:", errors)
+            alert("Error saving code knowledge test. Check console for details.")
+            },
         }
+        )
     }
 
     return (
@@ -62,6 +84,11 @@ export default function TeacherCodeIndex() {
             <h1 className="text-2xl md:text-3xl font-bold">
                 Teacher View — Code Knowledge ({variantParam})
             </h1>
+            {student && (
+                <p className="text-lg font-semibold text-pink-600">
+                    Student: {student.name}
+                </p>
+            )}
             <div className="flex gap-2">
                 <Button size="sm" variant="secondary" onClick={resetAll} title="Clear">
                 <RotateCcw className="w-4 h-4" />

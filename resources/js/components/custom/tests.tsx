@@ -9,7 +9,7 @@ import PhonemeSegmentationTest, { PhonemeSegmentationResult } from "@/components
 import AuditoryProcessingTest, { AuditoryProcessingResult } from "@/components/tests/auditory-processing-test";
 import CodeKnowledgeTest from "@/components/tests/code-knowledge-test";
 import { CodeKnowledgeResult } from "@/components/tests/code/shared";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { ROUTES } from "@/lib/routes";
 
 type TestsVariant = "pretest" | "posttest";
@@ -74,11 +74,74 @@ export default function Tests({ variant }: { variant: TestsVariant }) {
 
   // --- Save functions (placeholders) ---
   const saveBlendingOne = async (r: BlendingResult) => console.log("saveOne()", r);
-  const saveBlendingAll = async (r: BlendingResult[]) => console.log("saveAll()", r);
+  const saveBlendingAll = (results: BlendingResult[]) => {
+    if (!student) return;
+
+    router.post(
+      "/tests/blending", // Direct route path
+      {
+        variant,               // "pretest" | "posttest"
+        student_id: student.id,
+        results,
+      },
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          console.log("Blending test saved successfully");
+        },
+        onError: (errors) => {
+          console.error("Error saving blending test:", errors);
+        },
+      }
+    );
+  };
+
+
   const saveSegOne = async (r: PhonemeSegmentationResult) => console.log("segmentation saveOne()", r);
-  const saveSegAll = async (r: PhonemeSegmentationResult[]) => console.log("segmentation saveAll()", r);
+  const saveSegAll = (results: PhonemeSegmentationResult[]) => {
+    if (!student) return;
+
+    router.post(
+      "/tests/segmentation", // Direct route path
+      {
+        variant,             // "pretest" | "posttest"
+        student_id: student.id,
+        results,
+      },
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          console.log("Segmentation test saved successfully");
+          // You can surface flash('success') in the page props if you like.
+        },
+        onError: (errors) => {
+          console.error("Error saving segmentation test:", errors);
+        },
+      }
+    );
+  };
   const saveAuditoryOne = async (r: AuditoryProcessingResult) => console.log("auditory saveOne()", r);
-  const saveAuditoryAll = async (r: AuditoryProcessingResult[]) => console.log("auditory saveAll()", r);
+  const saveAuditoryAll = (results: AuditoryProcessingResult[]) => {
+    if (!student) return;
+
+    router.post(
+      "/tests/auditory",
+      {
+        variant,             // "pretest" | "posttest"
+        student_id: student.id,
+        results,
+      },
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          console.log("Auditory processing test saved successfully");
+        },
+        onError: (errors) => {
+          console.error("Error saving auditory processing test:", errors);
+        },
+      }
+    );
+  };
   const saveCodeAll = async (r: CodeKnowledgeResult[]) => console.log("code-knowledge saveAll()", r);
 
   return (
@@ -175,7 +238,12 @@ export default function Tests({ variant }: { variant: TestsVariant }) {
                   />
                 );
               case 3:
-                return <CodeKnowledgeTest variant={variant} onSubmitAll={saveCodeAll} />;
+                return <CodeKnowledgeTest 
+                  variant={variant} 
+                  onSubmitAll={saveCodeAll} 
+                  studentId={student?.id} 
+                  studentName={student?.name}
+                />;
               default:
                 return null;
             }

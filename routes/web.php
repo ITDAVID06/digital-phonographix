@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuditoryProcessingTestController;
+use App\Http\Controllers\BlendingTestController;
+use App\Http\Controllers\CodeKnowledgeTestController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\PhonemeSegmentationTestController;
 use App\Http\Controllers\PostTestController;
 use App\Http\Controllers\PreTestController;
 use App\Http\Controllers\TestController;
@@ -18,6 +22,9 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [StudentController::class, 'index'])->name('dashboard');
+    Route::get('/instructions', function() {
+        return Inertia::render('instructions');
+    })->name('instructions');
 
     Route::controller(PreTestController::class)->group(function () {
         Route::get('/pre-test', 'index')->name('pre-test');
@@ -40,6 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/students', 'index')->name('students.index');     
         Route::post('/students', 'store')->name('students.store');    
     });
+
+    Route::post('/tests/blending', [BlendingTestController::class, 'store'])->name('tests.blending.store');
+    Route::post('/tests/segmentation', [PhonemeSegmentationTestController::class, 'store'])->name('tests.segmentation.store');
+    Route::post('/tests/auditory', [AuditoryProcessingTestController::class, 'store'])->name('tests.auditory.store');
+    Route::post('/tests/code-knowledge', [CodeKnowledgeTestController::class, 'store'])->name('tests.code.store');
 });
 
 require __DIR__ . '/settings.php';

@@ -10,13 +10,17 @@ import { ROUTES } from "@/lib/routes"
 import { testsCodeTeacher } from "@/app-routes"
 
 type Props = {
-  variant: "pretest" | "posttest"
-  onSubmitAll?: (results: import("@/components/tests/code/shared").CodeKnowledgeResult[]) => void | Promise<void>
-  className?: string
+    variant: "pretest" | "posttest"
+    onSubmitAll?: (results: import("@/components/tests/code/shared").CodeKnowledgeResult[]) => void | Promise<void>
+    className?: string
+    studentId?: number
+    studentName?: string
 }
 
-export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: Props) {
-    const [knownMap, setKnownMap] = React.useState<Record<string, boolean>>(() => buildMap(STUDENT_ORDER))
+export default function CodeKnowledgeTest({ variant, onSubmitAll, className, studentId, studentName }: Props) {
+    const [knownMap, setKnownMap] = React.useState<Record<string, boolean>>(
+        () => buildMap(STUDENT_ORDER)
+    )
     const [idx, setIdx] = React.useState(0)
 
     const total = STUDENT_ORDER.length
@@ -30,7 +34,6 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
     const goNext = () => setIdx((i) => Math.min(total - 1, i + 1))
     const goTo = (i: number) => setIdx(() => Math.min(Math.max(i, 0), total - 1))
 
-    // Keyboard navigation (Left/Right arrows)
     React.useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
         if (e.key === "ArrowLeft") goPrev()
@@ -40,7 +43,6 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
         return () => window.removeEventListener("keydown", onKey)
     }, [total])
 
-    // optional save (unchanged)
     const saveAll = async () => {
         if (!onSubmitAll) return
         const now = Date.now()
@@ -54,41 +56,54 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
         await onSubmitAll(payload)
     }
 
-    // find which column the current item belongs to (for subtle label)
     const colLabel =
         (COL1 as readonly string[]).includes(current) ? "Column 1" :
         (COL2 as readonly string[]).includes(current) ? "Column 2" : "Column 3"
+
+    // ✅ build teacher URL with both variant and student_id
+    const teacherHref = studentId
+        ? `${testsCodeTeacher().url}?variant=${variant}&student_id=${studentId}`
+        : `${testsCodeTeacher().url}?variant=${variant}`
 
     return (
         <div className={cn("space-y-4 sm:space-y-6 md:space-y-8 px-2 sm:px-4", className)}>
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+            <div className="flex flex-col">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">Code Knowledge Test</h2>
+            {studentName && (
+                <p className="text-sm text-pink-600 mt-1">
+                Student: {studentName}
+                </p>
+            )}
+            </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button 
-                size="sm" 
-                variant="secondary" 
-                onClick={resetAll} 
+            <Button
+                size="sm"
+                variant="secondary"
+                onClick={resetAll}
                 title="Reset local highlights"
                 className="flex-1 sm:flex-none"
             >
                 <RotateCcw className="w-4 h-4 sm:mr-0" />
                 <span className="sm:hidden ml-2">Reset</span>
             </Button>
-            {/* Open teacher view in a new tab */}
-            <Button 
-                asChild 
-                size="sm" 
+
+            {/* ✅ Teacher link now carries student_id */}
+            <Button
+                asChild
+                size="sm"
                 title="Open teacher checklist in a new tab"
                 className="flex-1 sm:flex-none text-xs sm:text-sm"
+                disabled={!studentId}
             >
                 <a
-                    href={`${testsCodeTeacher().url}?variant=${variant}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                href={teacherHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 >
-                    <span className="hidden sm:inline">Teacher: Record knowledge</span>
-                    <span className="sm:hidden">Teacher View</span>
+                <span className="hidden sm:inline">Teacher: Record knowledge</span>
+                <span className="sm:hidden">Teacher View</span>
                 </a>
             </Button>
             </div>

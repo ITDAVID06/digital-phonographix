@@ -372,6 +372,24 @@ export default function GamesPage() {
         setShowSuccessAnimation(false)
     }
 
+    const goToRedirectGame = () => {
+        const redirect = currentGame.redirectTo
+        if (!redirect) return
+
+        const categoryIndex = GAME_CATEGORIES.findIndex(
+            (category) => category.name === redirect.categoryName,
+        )
+        if (categoryIndex === -1) return
+
+        const gameIndex = GAME_CATEGORIES[categoryIndex].games.findIndex(
+            (game) => game.name === redirect.gameName,
+        )
+        if (gameIndex === -1) return
+
+        handleGameChange(categoryIndex, gameIndex)
+    }
+
+
     return (
         <div className="min-h-screen flex bg-gradient-to-br from-background via-accent/20 to-tertiary/30">
         <aside
@@ -501,23 +519,47 @@ export default function GamesPage() {
                 <p className="text-center mt-8 text-lg md:text-xl text-foreground/70 font-medium">
                 Words completed: {currentAuditoryWordIndex}
                 </p>
+
+                {currentGame.redirectTo && (
+                <div className="mt-6 flex justify-center">
+                    <button
+                    onClick={goToRedirectGame}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl text-xl md:text-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+                    >
+                    <Sparkles className="w-6 h-6" />
+                    Go to {currentGame.redirectTo.gameName}
+                    </button>
+                </div>
+                )}
             </div>
             )}
 
             {gameType === "wordList" && currentGame.wordList && (
-            <div className="w-full max-w-4xl">
-                <WordListSlideshow
-                title={currentGame.name}
-                words={currentGame.wordList}
-                rightAction={
-                    <div className="hidden md:block">
-                    {/* Optional: open the teacher answer key in a new tab, reuse your existing button */}
-                    <OpenAnswerKeyButton gameName={currentGame.name} />
-                    </div>
-                }
-                />
-            </div>
-            )}
+  <div className="w-full max-w-4xl">
+    <WordListSlideshow
+      title={currentGame.name}
+      words={currentGame.wordList}
+      rightAction={
+        <div className="hidden md:block">
+          <OpenAnswerKeyButton gameName={currentGame.name} />
+        </div>
+      }
+    />
+
+    {currentGame.redirectTo && (
+      <div className="mt-6 flex justify-center">
+        <button
+          onClick={goToRedirectGame}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl text-xl md:text-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+        >
+          <Sparkles className="w-6 h-6" />
+          Go to {currentGame.redirectTo.gameName}
+        </button>
+      </div>
+    )}
+  </div>
+)}
+
 
             {gameType === "soundBingo" && currentGame.soundBingo && (
             <div className="w-full max-w-lg">
@@ -573,11 +615,24 @@ export default function GamesPage() {
                 </div>
 
                 <div className="mt-6 text-center space-y-2">
-                <p className="text-lg text-foreground/70">
-                    <strong>Single click:</strong> Blue | <strong>Double click:</strong> Green |{" "}
-                    <strong>Right click:</strong> Red
-                </p>
-                </div>
+  <p className="text-lg text-foreground/70">
+    <strong>Single click:</strong> Blue | <strong>Double click:</strong> Green |{" "}
+    <strong>Right click:</strong> Red
+  </p>
+</div>
+
+{currentGame.redirectTo && (
+  <div className="mt-6 flex justify-center">
+    <button
+      onClick={goToRedirectGame}
+      className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl text-xl md:text-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+    >
+      <Sparkles className="w-6 h-6" />
+      Go to {currentGame.redirectTo.gameName}
+    </button>
+  </div>
+)}
+
             </div>
             )}
 
@@ -651,10 +706,18 @@ export default function GamesPage() {
                     </div>
 
                     {/* Sentence Progress */}
-                    {currentGame.story && (
-                    <p className="text-center mt-6 text-xl font-semibold text-foreground/70">
-                        Sentence {currentSentenceIndex + 1} of {currentGame.story.sentences.length}
-                    </p>
+                    {currentGame.story &&
+                    currentGame.redirectTo &&
+                    currentSentenceIndex === currentGame.story.sentences.length - 1 && (
+                        <div className="mt-6 flex justify-center">
+                        <button
+                            onClick={goToRedirectGame}
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl text-xl md:text-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+                        >
+                            <Sparkles className="w-6 h-6" />
+                            Continue to {currentGame.redirectTo.gameName}
+                        </button>
+                        </div>
                     )}
                 </div>
                 </div>
@@ -768,50 +831,70 @@ export default function GamesPage() {
         </main>
 
         {showSuccessPopup && currentWordData && (
-            <div
+        <div
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn"
             onClick={resetGame}
-            >
+        >
             <div
-                className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl max-w-md mx-4 animate-popIn"
-                onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl max-w-md mx-4 animate-popIn"
+            onClick={(e) => e.stopPropagation()}
             >
-                <div className="text-center">
+            <div className="text-center">
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Great Job!</h2>
                 {currentWordData.imagePlaceholder ? (
-                    <img
+                <img
                     src={currentWordData.imagePlaceholder || "/placeholder.svg"}
                     alt={`Happy ${correctWord}`}
                     className="w-full h-64 object-cover rounded-2xl mb-6"
-                    />
+                />
                 ) : (
-                    <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 flex items-center justify-center">
+                <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 flex items-center justify-center">
                     <p className="text-gray-500">Image Placeholder</p>
-                    </div>
+                </div>
                 )}
-                <p className="text-2xl md:text-3xl font-bold text-gray-700 mb-6">You spelled {correctWord}!</p>
-                <div className="flex gap-4 justify-center">
-                    <button
+                <p className="text-2xl md:text-3xl font-bold text-gray-700 mb-6">
+                You spelled {correctWord}!
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                <button
                     onClick={resetGame}
                     className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-6 py-3 rounded-2xl text-lg font-bold transition-all hover:scale-105 active:scale-95 shadow-lg"
-                    >
+                >
                     Try Again
+                </button>
+
+                {/* Next word (existing behavior) */}
+                {currentGame.words && selectedWordIndex < currentGame.words.length - 1 && (
+                    <button
+                    onClick={() => {
+                        setShowSuccessPopup(false)
+                        handleNextWord()
+                    }}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-2xl text-lg font-bold transition-all hover:scale-105 active:scale-95 shadow-lg"
+                    >
+                    Next Word
                     </button>
-                    {currentGame.words && selectedWordIndex < currentGame.words.length - 1 && (
+                )}
+
+                {/* NEW: when on last word AND redirect configured, show "Go to Story" */}
+                {currentGame.redirectTo &&
+                    currentGame.words &&
+                    selectedWordIndex === currentGame.words.length - 1 && (
                     <button
                         onClick={() => {
                         setShowSuccessPopup(false)
-                        handleNextWord()
+                        goToRedirectGame()
                         }}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-2xl text-lg font-bold transition-all hover:scale-105 active:scale-95 shadow-lg"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl text-lg font-bold transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
                     >
-                        Next Word
+                        <Sparkles className="w-5 h-5" />
+                        Go to {currentGame.redirectTo.gameName}
                     </button>
                     )}
                 </div>
-                </div>
             </div>
             </div>
+        </div>
         )}
 
         <style>{`

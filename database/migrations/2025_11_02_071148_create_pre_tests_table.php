@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('pre_tests', function (Blueprint $table) {
             $table->id();
+            $table->string('test_name');
+            $table->decimal('multiplier', 5, 2)->default(1.00);
             $table->timestamps();
         });
     }

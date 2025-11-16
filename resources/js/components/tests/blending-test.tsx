@@ -164,7 +164,7 @@ export default function BlendingTest({ variant, onSubmitOne, onSubmitAll, classN
                         disabled={row.response.trim().length === 0}
                         className="min-w-28"
                         >
-                        Submit
+                        Check
                         </Button>
                     </div>
                     </li>
