@@ -60,39 +60,51 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
         (COL2 as readonly string[]).includes(current) ? "Column 2" : "Column 3"
 
     return (
-        <div className={cn("space-y-8", className)}>
+        <div className={cn("space-y-4 sm:space-y-6 md:space-y-8 px-2 sm:px-4", className)}>
         {/* Header */}
-        <div className="flex items-center justify-between">
-            <h2 className="text-2xl md:text-3xl font-bold">Code Knowledge Test</h2>
-            <div className="flex items-center gap-2">
-            <Button size="sm" variant="secondary" onClick={resetAll} title="Reset local highlights">
-                <RotateCcw className="w-4 h-4" />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">Code Knowledge Test</h2>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Button 
+                size="sm" 
+                variant="secondary" 
+                onClick={resetAll} 
+                title="Reset local highlights"
+                className="flex-1 sm:flex-none"
+            >
+                <RotateCcw className="w-4 h-4 sm:mr-0" />
+                <span className="sm:hidden ml-2">Reset</span>
             </Button>
             {/* Open teacher view in a new tab */}
-            <Button asChild size="sm" title="Open teacher checklist in a new tab">
-            <a
-                href={`${testsCodeTeacher().url}?variant=${variant}`}
-                target="_blank"
-                rel="noopener noreferrer"
+            <Button 
+                asChild 
+                size="sm" 
+                title="Open teacher checklist in a new tab"
+                className="flex-1 sm:flex-none text-xs sm:text-sm"
             >
-                Teacher: Record knowledge
-            </a>
+                <a
+                    href={`${testsCodeTeacher().url}?variant=${variant}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span className="hidden sm:inline">Teacher: Record knowledge</span>
+                    <span className="sm:hidden">Teacher View</span>
+                </a>
             </Button>
             </div>
         </div>
 
         {/* Student-facing panel */}
-        <Card className="p-6 md:p-8 border-4 border-primary/30 bg-card shadow-xl">
-            <header className="mb-6">
-            <h3 className="text-xl md:text-2xl font-semibold">Read the letters and letter groups</h3>
-            <p className="text-foreground/70 text-sm md:text-base">
+        <Card className="p-4 sm:p-6 md:p-8 border-2 sm:border-4 border-primary/30 bg-card shadow-xl">
+            <header className="mb-4 sm:mb-6">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Read the letters and letter groups</h3>
+            <p className="text-foreground/70 text-xs sm:text-sm md:text-base mt-1">
                 The student reads; the teacher records knowledge in a separate tab.
             </p>
             </header>
 
-            {/* Carousel: single grapheme */}
-            <div className="flex items-center justify-center gap-6 mb-8">
-            {/* Prev Button */}
+            <div className="flex items-center justify-between gap-1 sm:gap-2 md:gap-4 mb-6 sm:mb-8 w-full min-w-0">
+            {/* Prev Button (flex-none so center can shrink) */}
             <Button
                 onClick={goPrev}
                 variant="secondary"
@@ -100,51 +112,53 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
                 disabled={idx === 0}
                 aria-label="Previous"
                 title="Previous"
-                className="rounded-xl w-12 h-12 md:w-16 md:h-16"
-            >
-                <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+                className="flex-none rounded-lg sm:rounded-xl w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+                >
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
             </Button>
 
-            {/* Fixed-size display box */}
-            <div
-                className={cn(
-                // Fixed width, generous height
-                "w-[22rem] md:w-[78rem] h-[16rem] md:h-[22rem]",
-                // Centered content
-                "flex items-center justify-center rounded-2xl border shadow-inner",
-                // Text scaling + aesthetics
-                "text-6xl md:text-[24rem] font-bold tracking-widest select-none text-center",
-                // Color logic
-                knownMap[current] ? "border-green-500 bg-green-50" : "border-border bg-background"
-                )}
-                title={META[current] ?? ""}
-                aria-label={`Grapheme ${current}`}
-            >
-                {current}
-            </div>
+              {/* Flexible center box: flex-1  min-w-0 allows it to shrink on narrow screens */}
+                <div
+                    className={cn(
+                    "flex-1 min-w-0 mx-2",
+                    "h-[10rem] sm:h-[12rem] md:h-[16rem] lg:h-[20rem] xl:h-[24rem]",
+                    "flex items-center justify-center rounded-lg sm:rounded-xl md:rounded-2xl border shadow-inner",
+                    "text-3xl sm:text-4xl md:text-7xl lg:text-8xl xl:text-[15rem] font-bold tracking-wide select-none text-center",
+                    "px-2 sm:px-4 md:px-6",
+                    knownMap[current] ? "border-green-500 bg-green-50" : "border-border bg-background",
+                    "overflow-hidden"
+                    )}
+                    title={META[current] ?? ""}
+                    aria-label={`Grapheme ${current}`}
+                >
+                    {/* inner wrapper ensures text truncation and prevents overflow */}
+                    <div className="w-full break-words leading-none">
+                    {current}
+                    </div>
+                </div>
 
-            {/* Next Button */}
-            <Button
-                onClick={goNext}
-                size="icon"
-                disabled={idx === total - 1}
-                aria-label="Next"
-                title="Next"
-                className="rounded-xl w-12 h-12 md:w-16 md:h-16"
-            >
-                <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
-            </Button>
+                {/* Next Button */}
+                <Button
+                    onClick={goNext}
+                    size="icon"
+                    disabled={idx === total - 1}
+                    aria-label="Next"
+                    title="Next"
+                    className="flex-none rounded-lg sm:rounded-xl w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+                >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                </Button>
             </div>
 
             {/* Pagination + meta */}
-            <div className="flex flex-col items-center gap-2 mb-4">
-            <div className="text-sm md:text-base text-foreground/70 font-medium">
+            <div className="flex flex-col items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <div className="text-xs sm:text-sm md:text-base text-foreground/70 font-medium text-center">
                 {colLabel} • Item <span className="font-semibold">{idx + 1}</span> of {total}
             </div>
 
             {/* Dots pagination — scrollable, accessible */}
-            <div className="max-w-full overflow-x-auto">
-                <div className="flex items-center gap-1 px-1 py-1">
+            <div className="overflow-x-auto w-16 md:w-64 lg:w-128">
+                <div className="flex items-center justify-start gap-1 px-2 py-1 w-max">
                 {STUDENT_ORDER.map((g, i) => {
                     const active = i === idx
                     return (
@@ -154,8 +168,8 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
                         aria-label={`Go to ${g} (${i + 1})`}
                         title={g}
                         className={cn(
-                        "h-2.5 w-2.5 rounded-full transition-all",
-                        active ? "w-6 bg-primary" : "bg-muted hover:bg-muted/80"
+                        "h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full transition-all shrink-0",
+                        active ? "w-4 sm:w-6 bg-primary" : "bg-muted hover:bg-muted/80"
                         )}
                     />
                     )
@@ -165,7 +179,7 @@ export default function CodeKnowledgeTest({ variant, onSubmitAll, className }: P
             </div>
 
             {/* Optional footer status */}
-            <div className="text-sm text-foreground/60">
+            <div className="text-xs sm:text-sm text-foreground/60 text-center">
             Marked known (local preview): <span className="font-semibold">{totalKnown}</span> / {total}
             </div>
         </Card>

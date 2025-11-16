@@ -96,7 +96,7 @@ export default function Login({
                             <>
                                 {/* Email Field */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="email">Email Address</Label>
+                                    <Label htmlFor="email" className="text-primary-foreground">Email Address</Label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -106,7 +106,7 @@ export default function Login({
                                         tabIndex={1}
                                         autoComplete="email"
                                         placeholder="email@example.com"
-                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400"
+                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-primary-foreground"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
@@ -114,7 +114,7 @@ export default function Login({
                                 {/* Password Field */}
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <Label htmlFor="password">Password</Label>
+                                        <Label htmlFor="password" className="text-primary-foreground">Password</Label>
                                         {canResetPassword && (
                                             <TextLink
                                                 href={request()}
@@ -133,7 +133,7 @@ export default function Login({
                                         tabIndex={2}
                                         autoComplete="current-password"
                                         placeholder="Password"
-                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400"
+                                        className="rounded-full border-purple-300 focus:ring-purple-400 focus:border-purple-400 text-primary-foreground"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
@@ -141,8 +141,8 @@ export default function Login({
                                 {/* Remember Me */}
                                 <div className="flex items-center space-x-2">
                                     <Checkbox id="remember" name="remember" tabIndex={3} />
-                                    <Label htmlFor="remember">Remember me</Label>
-                                </div>
+                                    <Label htmlFor="remember" className="text-primary-foreground">Remember me</Label>
+                                </div> 
 
                                 {/* Submit Button */}
                                 <motion.div whileHover={{ scale: 1.05 }}>

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Home } from "lucide-react";
 import BlendingTest, { BlendingResult } from "@/components/tests/blending-test";
 import PhonemeSegmentationTest, { PhonemeSegmentationResult } from "@/components/tests/phoneme-segmentation-test";
 import AuditoryProcessingTest, { AuditoryProcessingResult } from "@/components/tests/auditory-processing-test";
@@ -121,13 +121,15 @@ export default function Tests({ variant }: { variant: TestsVariant }) {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex items-center justify-center p-4">
-        <button
-          onClick={() => setSidebarOpen((s) => !s)}
-          className="fixed top-4 left-4 z-10 bg-card border border-border rounded-lg p-2 hover:bg-muted transition-colors"
-        >
-          {sidebarOpen ? "←" : "→"}
-        </button>
+      <main className="flex-1 flex flex-col p-4">
+        <div className="mb-4">
+          <Link href={ROUTES.DASHBOARD}>
+            <Button variant="outline" size="sm">
+              <Home className="w-4 h-4 mr-2" />
+              Dashboard
+            </Button>
+          </Link>
+        </div>
 
         <div className="w-full">
           <h1 className="text-4xl md:text-6xl font-bold text-center mb-2 text-foreground">
@@ -181,7 +183,7 @@ export default function Tests({ variant }: { variant: TestsVariant }) {
 
           {/* Navigation Buttons */}
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
-            <Link href={ROUTES.HOME}>
+            <Link href={ROUTES.DASHBOARD}>
               <Button variant="secondary">
                 <ChevronLeft className="w-4 h-4 mr-1" /> Home
               </Button>

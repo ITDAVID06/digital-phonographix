@@ -1,11 +1,14 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, RotateCcw, Sparkles } from "lucide-react"
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, RotateCcw, Sparkles, Home } from "lucide-react"
 import { OpenAnswerKeyButton } from "@/components/custom/open-answer-key-button"
 import WordListSlideshow from "@/components/games/word-list-slideshow"
 import { Letter } from "@/types/games"
 import { GAME_CATEGORIES } from "@/data/game-categories"
+import { Link } from "@inertiajs/react"
+import { Button } from "@/components/ui/button"
+import { ROUTES } from "@/lib/routes"
 
 export default function GamesPage() {
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)
@@ -415,14 +418,17 @@ export default function GamesPage() {
             </div>
         </aside>
 
-        <main className="flex-1 flex items-center justify-center p-4">
-            <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="fixed top-4 left-4 z-10 bg-card border border-border rounded-lg p-2 hover:bg-muted transition-colors"
-            >
-            {sidebarOpen ? "←" : "→"}
-            </button>
-
+        <main className="flex-1 flex flex-col p-4">
+            <div className="mb-4">
+            <Link href={ROUTES.DASHBOARD}>
+                <Button variant="outline" size="sm">
+                <Home className="w-4 h-4 mr-2" />
+                Dashboard
+                </Button>
+            </Link>
+            </div>
+            
+            <div className="w-full flex justify-center">
             {gameType === "auditoryProcessing" && currentGame.auditoryProcessing && (
             <div className="w-full max-w-2xl">
                 <div className="flex justify-center mb-4">
@@ -514,7 +520,7 @@ export default function GamesPage() {
             )}
 
             {gameType === "soundBingo" && currentGame.soundBingo && (
-            <div className="w-full max-w-4xl">
+            <div className="w-full max-w-lg">
                 <h1 className="text-4xl md:text-6xl font-bold text-center mb-4 text-foreground text-balance">
                 {currentGame.name} Sound Bingo
                 </h1>
@@ -546,7 +552,7 @@ export default function GamesPage() {
                             onContextMenu={(e) => handleBingoCellRightClick(e, rowIndex, colIndex)}
                             className={`aspect-square ${
                             bingoCellColors[rowIndex]?.[colIndex] || "bg-white"
-                            } border-4 border-gray-800 rounded-xl flex items-center justify-center text-8xl md:text-8xl font-bold cursor-pointer hover:scale-120 active:scale-95 transition-all shadow-lg select-none`}
+                            } border-4 border-gray-800 rounded-xl flex items-center justify-center text-4xl md:text-6xl font-bold cursor-pointer hover:scale-120 active:scale-95 transition-all shadow-lg select-none`}
                         >
                             {letter.toLowerCase()}
                         </div>
@@ -583,12 +589,12 @@ export default function GamesPage() {
 
                 <div className="flex flex-col gap-8 items-center">
                 {/* Story Image - Now on top */}
-                <div className="w-full max-w-2xl">
+                <div className="w-full max-w-2xl flex justify-center">
                     {currentGame.story?.images?.[currentSentenceIndex] ? (
                         <img
                             src={currentGame.story.images[currentSentenceIndex]}
                             alt={`Sentence ${currentSentenceIndex + 1}`}
-                            className="w-full h-auto rounded-3xl shadow-2xl border-4 border-primary"
+                            className="h-80 w-80 rounded-3xl shadow-2xl border-4 border-primary"
                         />
                     ) : (
                         <div className="w-full aspect-[4/3] rounded-3xl shadow-2xl border-4 border-primary bg-muted flex items-center justify-center">
@@ -758,6 +764,7 @@ export default function GamesPage() {
                 </p>
             </div>
             )}
+            </div>
         </main>
 
         {showSuccessPopup && currentWordData && (
