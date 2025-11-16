@@ -31,11 +31,11 @@ export default function AnswerKeyIndex({ title, columns, variant = "pretest" }: 
 
   return (
     <div className="min-h-screen p-6 md:p-10 from-background via-accent/20 to-tertiary/30">
-      <Head title={`${title} — Answer Key`} />
+      <Head title={`${title} — Answer Key Auditory Processing`} />
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between gap-4">
           <h1 className="text-2xl md:text-3xl font-bold">
-            {title} — Answer Key {variant ? `(${variant})` : null}
+            {title} — Answer Key Auditory Processing
           </h1>
           <div className="flex gap-2">
             <Button size="sm" variant="secondary" onClick={() => setAll(false)} title="Clear">
