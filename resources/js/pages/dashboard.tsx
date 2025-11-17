@@ -118,12 +118,6 @@ export default function Dashboard() {
               </Card>
             </Link>
           </div>
-
-          {/* Footer */}
-          <footer className="text-center mt-10 text-foreground/60 text-sm">
-            <Sparkles className="inline w-4 h-4 mr-1" />
-            Built with Inertia React & shadcn/ui
-          </footer>
         </div>
       </main>
 

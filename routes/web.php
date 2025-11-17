@@ -9,6 +9,7 @@ use App\Http\Controllers\PostTestController;
 use App\Http\Controllers\PreTestController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -53,6 +54,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tests/auditory', [AuditoryProcessingTestController::class, 'store'])->name('tests.auditory.store');
     Route::post('/tests/code-knowledge', [CodeKnowledgeTestController::class, 'store'])->name('tests.code.store');
     Route::get('/tests/composite', [TestController::class, 'composite'])->name('tests.composite');
+
+    Route::controller(UserManagementController::class)->group(function () {
+        Route::get('/users-management', 'index')->name('users.management');
+
+        // User CRUD
+        Route::post('/users-management/users', 'storeUser')->name('users.management.users.store');
+        Route::put('/users-management/users/{user}', 'updateUser')->name('users.management.users.update');
+        Route::delete('/users-management/users/{user}', 'destroyUser')->name('users.management.users.destroy');
+
+        // Assign / update a student's grade (single grade at a time)
+        Route::post('/users-management/students/{student}/grade', 'assignGrade')
+            ->name('users.management.students.assign-grade');
+    });
 });
 
 require __DIR__ . '/settings.php';
