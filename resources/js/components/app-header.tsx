@@ -29,7 +29,7 @@ import {
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
-import { dashboard, games, postTest, preTest, users } from '@/routes';
+import { dashboard, games, postTest, preTest } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, Gamepad2, Home, LayoutGrid, Menu, NotebookPen, NotepadText, Search, User2 } from 'lucide-react';
