@@ -31,7 +31,7 @@ const WelcomePage: React.FC = () => {
           animate={{ y: [0, -10, 0] }}
           transition={{ repeat: Infinity, duration: 3 }}
         >
-          🌈 Digital Phonographix
+          🌈 Digital Phono-Graphix
         </motion.h1>
         <motion.p
           className="text-xl text-purple-600 font-medium"

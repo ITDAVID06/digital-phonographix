@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tests/segmentation', [PhonemeSegmentationTestController::class, 'store'])->name('tests.segmentation.store');
     Route::post('/tests/auditory', [AuditoryProcessingTestController::class, 'store'])->name('tests.auditory.store');
     Route::post('/tests/code-knowledge', [CodeKnowledgeTestController::class, 'store'])->name('tests.code.store');
+    Route::get('/tests/composite', [TestController::class, 'composite'])->name('tests.composite');
 });
 
 require __DIR__ . '/settings.php';

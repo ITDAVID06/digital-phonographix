@@ -179,6 +179,24 @@ export default function Tests({ variant }: { variant: TestsVariant }) {
                 </div>
               )}
             </div>
+
+            {/* New: Composite Reading Score button */}
+            <div className="pt-4 border-t border-border mt-4">
+              <Button
+                className="w-full"
+                variant="outline"
+                disabled={!student}
+                onClick={() => {
+                  if (!student) return;
+                  router.get("/tests/composite", {
+                    variant,
+                    student_id: student.id,
+                  });
+                }}
+              >
+                Composite Reading Score
+              </Button>
+            </div>
           </nav>
         </div>
       </aside>

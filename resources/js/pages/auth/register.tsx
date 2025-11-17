@@ -28,7 +28,7 @@ export default function Register() {
                     transition={{ duration: 1, delay: 0.3 }}
                     className="text-5xl font-extrabold text-white drop-shadow-lg mb-4"
                 >
-                    🌈 Digital Phonographix
+                    🌈 Digital Phono-Graphix
                 </motion.h1>
 
                 <motion.p
