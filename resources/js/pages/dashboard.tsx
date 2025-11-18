@@ -45,7 +45,7 @@ export default function Dashboard() {
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Literacy Toolkit</h1>
             <p className="text-foreground/70 mt-2">Choose a module to begin</p>
 
-            <div className="mt-6 flex justify-center">
+            {/* <div className="mt-6 flex justify-center">
               <Button
                 onClick={() => setIsAddModalOpen(true)}
                 className="bg-pink-500 hover:bg-pink-600 text-white font-semibold text-lg px-6 py-3 rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
@@ -53,7 +53,7 @@ export default function Dashboard() {
                 <PlusCircle className="w-5 h-5" />
                 Add Student
               </Button>
-            </div>
+            </div> */}
           </header>
 
           {/* Cards */}
@@ -122,7 +122,7 @@ export default function Dashboard() {
       </main>
 
       {/* Add Student Modal */}
-      <AddStudentModal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
+      {/* <AddStudentModal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} /> */}
 
       {/* Select Student Modal */}
       <SelectStudentModal

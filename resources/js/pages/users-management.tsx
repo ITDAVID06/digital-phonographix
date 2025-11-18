@@ -5,10 +5,9 @@ import * as React from "react";
 import { usePage, router, Link } from "@inertiajs/react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // if you have one; otherwise use <input>
 import { ROUTES } from "@/lib/routes";
 import { Home, Trash2, Save, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
+import Confetti from "react-confetti";
 
 type User = {
   id: number;
@@ -26,7 +25,7 @@ type Grade = {
 type Student = {
   id: number;
   name: string;
-  grades: Grade[]; // via belongsToMany
+  grades: Grade[];
 };
 
 type PageProps = {
@@ -48,12 +47,19 @@ export default function UsersManagement() {
     password: "",
   });
 
-  // --- Inline edit user state (by id) ---
+  // --- Inline edit user state ---
   const [editingUserId, setEditingUserId] = React.useState<number | null>(null);
   const [editUser, setEditUser] = React.useState({
     name: "",
     email: "",
   });
+
+  // --- Create student form state ---
+  const [newStudentName, setNewStudentName] = React.useState("");
+
+  // --- Inline edit student state ---
+  const [editingStudentId, setEditingStudentId] = React.useState<number | null>(null);
+  const [editStudentName, setEditStudentName] = React.useState("");
 
   // --- Grade selection state (local) ---
   const [studentGrade, setStudentGrade] = React.useState<Record<number, number | "">>(
@@ -65,6 +71,12 @@ export default function UsersManagement() {
       }, {} as Record<number, number | "">)
   );
 
+   // --- Confetti state ---
+  const [showConfetti, setShowConfetti] = React.useState(false);
+
+
+  // ---------- USER HANDLERS ----------
+
   const handleCreateUser = (e: React.FormEvent) => {
     e.preventDefault();
     router.post(
@@ -75,6 +87,8 @@ export default function UsersManagement() {
       {
         onSuccess: () => {
           setNewUser({ name: "", email: "", password: "" });
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 5000);
         },
       }
     );
@@ -109,6 +123,59 @@ export default function UsersManagement() {
     router.delete(`/users-management/users/${userId}`);
   };
 
+  // ---------- STUDENT HANDLERS ----------
+
+  const handleCreateStudent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newStudentName.trim()) return;
+
+    router.post(
+      "/users-management/students",
+      {
+        name: newStudentName.trim(),
+      },
+      {
+        onSuccess: () => {
+          setNewStudentName("");
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 5000);
+        },
+      }
+    );
+  };
+
+  const startEditStudent = (student: Student) => {
+    setEditingStudentId(student.id);
+    setEditStudentName(student.name);
+  };
+
+  const cancelEditStudent = () => {
+    setEditingStudentId(null);
+    setEditStudentName("");
+  };
+
+  const handleUpdateStudent = (studentId: number) => {
+    if (!editStudentName.trim()) return;
+
+    router.put(
+      `/users-management/students/${studentId}`,
+      {
+        name: editStudentName.trim(),
+      },
+      {
+        onSuccess: () => {
+          setEditingStudentId(null);
+          setEditStudentName("");
+        },
+      }
+    );
+  };
+
+  const handleDeleteStudent = (studentId: number) => {
+    if (!confirm("Are you sure you want to delete this student?")) return;
+    router.delete(`/users-management/students/${studentId}`);
+  };
+
   const handleGradeChange = (studentId: number, gradeId: number | "") => {
     setStudentGrade((prev) => ({ ...prev, [studentId]: gradeId }));
   };
@@ -124,7 +191,16 @@ export default function UsersManagement() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-tertiary/30 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={200}
+        />
+      )}
+      
+      <div className="max-w-8xl mx-auto space-y-6">
         {/* Top bar */}
         <div className="flex items-center justify-between gap-3 mb-2">
           <div>
@@ -132,7 +208,7 @@ export default function UsersManagement() {
               Users & Students Management
             </h1>
             <p className="text-sm md:text-base text-foreground/70">
-              Manage teacher accounts and assign grades to students.
+              Manage teacher accounts and fully manage students & their grades.
             </p>
           </div>
           <Link href={ROUTES.DASHBOARD}>
@@ -169,7 +245,9 @@ export default function UsersManagement() {
                 <input
                   type="text"
                   value={newUser.name}
-                  onChange={(e) => setNewUser((prev) => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({ ...prev, name: e.target.value }))
+                  }
                   placeholder="Name"
                   className="rounded-lg border px-3 py-2 bg-background text-sm"
                   required
@@ -177,7 +255,9 @@ export default function UsersManagement() {
                 <input
                   type="email"
                   value={newUser.email}
-                  onChange={(e) => setNewUser((prev) => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({ ...prev, email: e.target.value }))
+                  }
                   placeholder="Email"
                   className="rounded-lg border px-3 py-2 bg-background text-sm"
                   required
@@ -185,7 +265,9 @@ export default function UsersManagement() {
                 <input
                   type="password"
                   value={newUser.password}
-                  onChange={(e) => setNewUser((prev) => ({ ...prev, password: e.target.value }))}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({ ...prev, password: e.target.value }))
+                  }
                   placeholder="Password"
                   className="rounded-lg border px-3 py-2 bg-background text-sm"
                   required
@@ -291,16 +373,41 @@ export default function UsersManagement() {
               Students & Grade Assignment
             </h2>
 
+            {/* Create student form */}
+            <form
+              onSubmit={handleCreateStudent}
+              className="mb-4 space-y-3 border-b border-border pb-4"
+            >
+              <h3 className="text-sm font-semibold text-foreground/80">
+                Add New Student
+              </h3>
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={newStudentName}
+                  onChange={(e) => setNewStudentName(e.target.value)}
+                  placeholder="Student name"
+                  className="flex-1 rounded-lg border px-3 py-2 bg-background text-sm"
+                  required
+                />
+                <Button size="sm" type="submit" className="flex items-center gap-1">
+                  <Plus className="w-4 h-4" />
+                  Create
+                </Button>
+              </div>
+            </form>
+
             {students.length === 0 ? (
               <p className="text-sm text-foreground/60">
-                No students found. You can add students from the Students page.
+                No students found. Add students using the form above.
               </p>
             ) : (
-              <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
                 {students.map((student) => {
                   const selectedGradeId = studentGrade[student.id] ?? "";
                   const currentGradeName =
                     student.grades[0]?.name ?? "No grade assigned";
+                  const isEditing = editingStudentId === student.id;
 
                   return (
                     <div
@@ -308,11 +415,21 @@ export default function UsersManagement() {
                       className="flex flex-col md:flex-row md:items-center gap-2 border border-border rounded-lg px-3 py-2 bg-background/70"
                     >
                       <div className="flex-1">
-                        <p className="font-semibold text-sm">{student.name}</p>
+                        {isEditing ? (
+                          <input
+                            type="text"
+                            value={editStudentName}
+                            onChange={(e) => setEditStudentName(e.target.value)}
+                            className="w-full rounded-lg border px-2 py-1 text-sm bg-background"
+                          />
+                        ) : (
+                          <p className="font-semibold text-sm">{student.name}</p>
+                        )}
                         <p className="text-xs text-foreground/60">
                           Current: {currentGradeName}
                         </p>
                       </div>
+
                       <div className="flex flex-col md:flex-row gap-2 md:items-center">
                         <select
                           className="rounded-lg border px-2 py-1 bg-background text-sm"
@@ -338,6 +455,47 @@ export default function UsersManagement() {
                         >
                           Save Grade
                         </Button>
+                      </div>
+
+                      <div className="flex gap-2 justify-end">
+                        {isEditing ? (
+                          <>
+                            <Button
+                              size="icon"
+                              variant="secondary"
+                              onClick={() => handleUpdateStudent(student.id)}
+                              title="Save student"
+                            >
+                              <Save className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="outline"
+                              onClick={cancelEditStudent}
+                              title="Cancel"
+                            >
+                              ✕
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => startEditStudent(student)}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="destructive"
+                              onClick={() => handleDeleteStudent(student.id)}
+                              title="Delete student"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </>
+                        )}
                       </div>
                     </div>
                   );

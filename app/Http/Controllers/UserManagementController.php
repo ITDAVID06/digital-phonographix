@@ -66,6 +66,42 @@ class UserManagementController extends Controller
         return back()->with('success', 'User deleted successfully.');
     }
 
+
+    
+    // ---------- STUDENTS ----------
+
+    public function storeStudent(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        Student::create([
+            'name' => $data['name'],
+        ]);
+
+        return back()->with('success', 'Student created successfully.');
+    }
+
+    public function updateStudent(Request $request, Student $student)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $student->update($data);
+
+        return back()->with('success', 'Student updated successfully.');
+    }
+
+    public function destroyStudent(Student $student)
+    {
+        // grade_student pivot will be cascade-deleted thanks to FK definition
+        $student->delete();
+
+        return back()->with('success', 'Student deleted successfully.');
+    }
+
     /**
      * Assign / update a student's grade.
      * For now: single grade per student => sync with one grade id.

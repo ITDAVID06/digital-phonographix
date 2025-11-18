@@ -63,6 +63,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/users-management/users/{user}', 'updateUser')->name('users.management.users.update');
         Route::delete('/users-management/users/{user}', 'destroyUser')->name('users.management.users.destroy');
 
+        // Student CRUD
+        Route::post('/users-management/students', 'storeStudent')->name('users-management.students.store');
+        Route::put('/users-management/students/{student}', 'updateStudent')->name('users-management.students.update');
+        Route::delete('/users-management/students/{student}', 'destroyStudent')->name('users-management.students.destroy');
+
         // Assign / update a student's grade (single grade at a time)
         Route::post('/users-management/students/{student}/grade', 'assignGrade')
             ->name('users.management.students.assign-grade');
