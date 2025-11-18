@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
 import { Home, Trash2, Save, Plus } from "lucide-react";
 import Confetti from "react-confetti";
+import { Student } from "./dashboard";
 
 type User = {
   id: number;
@@ -20,12 +21,6 @@ type Grade = {
   id: number;
   name: string;
   multiplier: string | number;
-};
-
-type Student = {
-  id: number;
-  name: string;
-  grades: Grade[];
 };
 
 type PageProps = {
@@ -65,7 +60,7 @@ export default function UsersManagement() {
   const [studentGrade, setStudentGrade] = React.useState<Record<number, number | "">>(
     () =>
       students.reduce((acc, s) => {
-        const current = s.grades[0] ?? null;
+        const current = s.active_grade[0] ?? null;
         acc[s.id] = current ? current.id : "";
         return acc;
       }, {} as Record<number, number | "">)
@@ -406,7 +401,7 @@ export default function UsersManagement() {
                 {students.map((student) => {
                   const selectedGradeId = studentGrade[student.id] ?? "";
                   const currentGradeName =
-                    student.grades[0]?.name ?? "No grade assigned";
+                    student.active_grade[0]?.name ?? "No grade assigned";
                   const isEditing = editingStudentId === student.id;
 
                   return (

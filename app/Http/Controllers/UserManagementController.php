@@ -20,7 +20,7 @@ class UserManagementController extends Controller
                 ->get(['id', 'name', 'email', 'created_at']),
 
             'students' => Student::query()
-                ->with('grades:id,name') // assuming belongsToMany
+                ->with('activeGrade') // assuming belongsToMany
                 ->orderBy('name')
                 ->get(['id', 'name']),
 
