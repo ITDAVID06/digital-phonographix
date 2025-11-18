@@ -104,7 +104,7 @@ class UserManagementController extends Controller
 
     /**
      * Assign / update a student's grade.
-     * For now: single grade per student => sync with one grade id.
+     * Exactly one active grade per student; old grades kept as inactive.
      */
     public function assignGrade(Request $request, Student $student)
     {
@@ -112,12 +112,16 @@ class UserManagementController extends Controller
             'grade_id' => ['required', 'exists:grades,id'],
         ]);
 
-        // If you want exactly ONE active grade per student:
-        $student->grades()->sync([$data['grade_id']]);
+        // 1) Mark all existing grade_student rows for this student as inactive
+        \DB::table('grade_student')
+            ->where('student_id', $student->id)
+            ->update(['active' => false]);
 
-        // If you want to allow multiple grades, use syncWithoutDetaching instead:
-        // $student->grades()->syncWithoutDetaching([$data['grade_id']]);
+        // 2) Attach or update this grade row as active
+        $student->grades()->syncWithoutDetaching([
+            $data['grade_id'] => ['active' => true],
+        ]);
 
-        return back()->with('success', 'Student grade updated.');
+        return back()->with('success', 'Student active grade updated.');
     }
 }

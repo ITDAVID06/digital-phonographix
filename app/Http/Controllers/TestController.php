@@ -25,43 +25,69 @@ class TestController extends Controller
     }
 
     /**
-     * Composite Reading Score for a student & variant.
+     * Composite Reading Score for a student & variant, with selectable grade.
      */
     public function composite(Request $request)
     {
-        $variant = $request->query('variant', 'pretest'); // "pretest" | "posttest"
+        $variant   = $request->query('variant', 'pretest'); // "pretest" | "posttest"
         $studentId = $request->query('student_id');
+        $gradeId   = $request->query('grade_id'); // optional
 
         abort_if(!$studentId, 404);
 
         $student = Student::with(['grades', 'preTests', 'postTests'])->findOrFail($studentId);
 
-        // Decide which tests collection to use
-        $testsCollection = $variant === 'pretest'
-            ? $student->preTests   // belongsToMany PreTest
-            : $student->postTests; // belongsToMany PostTest
+        // All grades ever attached to this student (with pivot.active)
+        $grades      = $student->grades->values();
+        $activeGrade = $student->activeGrade()->first();
 
-        $byName = $testsCollection->keyBy('test_name');
+        // Determine which grade is selected:
+        $selectedGrade = null;
 
-        // These test_name strings must match your seeder/test creation
+        if ($gradeId) {
+            $selectedGrade = $grades->firstWhere('id', (int) $gradeId);
+        }
+
+        if (!$selectedGrade) {
+            // Default: active grade if any, otherwise first grade, otherwise null
+            $selectedGrade = $activeGrade ?: $grades->first();
+        }
+
+        $selectedGradeId = $selectedGrade?->id;
+
+        // Decide which tests collection to use (pre or post)
+        $tests = $variant === 'pretest'
+            ? $student->preTests
+            : $student->postTests;
+
+        // Filter tests by selected grade_id from pivot
+        if ($selectedGradeId) {
+            $tests = $tests->filter(fn ($test) => (int) $test->pivot->grade_id === (int) $selectedGradeId);
+        }
+
+        $byName = $tests->keyBy('test_name');
+
+        // These test_name strings must match your seeder
         $blending   = optional($byName->get('Blending Test'))->pivot?->calculated_score ?? 0;
         $segmenting = optional($byName->get('Segmenting Test'))->pivot?->calculated_score ?? 0;
         $auditory   = optional($byName->get('Auditory Processing Tests'))->pivot?->calculated_score ?? 0;
         $code       = optional($byName->get('Code Knowledge Test'))->pivot?->calculated_score ?? 0;
 
-        $totalScore = $blending + $segmenting + $auditory + $code;
-        $averageScore = $totalScore / 4; // "Total Score of the four test ( total score / 4 )"
+        $totalScore   = $blending + $segmenting + $auditory + $code;
+        $averageScore = $totalScore / 4; // Total Score of the four test ( total score / 4 )
 
-        // Grade & grade multiplier
-        $grade = $student->grades()->first(); // assume one active grade
-        $gradeMultiplier = $grade?->multiplier ?? 1.00;
+        // Grade multiplier (from selected grade)
+        $gradeMultiplier = $selectedGrade?->multiplier ?? 1.00;
 
-        // "Then show the grade total as well ... multiply the total score by that multiplier."
+        // Composite × grade multiplier (this is your "grade total")
         $gradeComposite = round($averageScore * $gradeMultiplier, 2);
 
         return Inertia::render('tests/composite-reading-score', [
             'variant' => $variant,
-            'student' => $student,
+            'student' => [
+                'id'   => $student->id,
+                'name' => $student->name,
+            ],
             'scores'  => [
                 'blending'   => $blending,
                 'segmenting' => $segmenting,
@@ -70,8 +96,14 @@ class TestController extends Controller
                 'total'      => $totalScore,
                 'average'    => $averageScore,
             ],
-            'grade'           => $grade,
-            'gradeComposite'  => $gradeComposite,
+            'grades' => $grades->map(fn ($g) => [
+                'id'         => $g->id,
+                'name'       => $g->name,
+                'multiplier' => (float) $g->multiplier,
+                'active'     => (bool) $g->pivot->active,
+            ]),
+            'selected_grade_id' => $selectedGradeId,
+            'gradeComposite'    => $gradeComposite,
         ]);
     }
 

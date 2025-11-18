@@ -36,6 +36,8 @@ public function up(): void
                 ->constrained()
                 ->cascadeOnDelete();
 
+            $table->boolean('active')->default(true);
+
             $table->timestamps();
         });
 
@@ -53,6 +55,10 @@ public function up(): void
 
             // teacher who entered the score
             $table->foreignIdFor(User::class)
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(Grade::class)
                 ->constrained()
                 ->cascadeOnDelete();
 
@@ -76,6 +82,10 @@ public function up(): void
 
             // teacher who entered the score
             $table->foreignIdFor(User::class)
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(Grade::class)
                 ->constrained()
                 ->cascadeOnDelete();
 

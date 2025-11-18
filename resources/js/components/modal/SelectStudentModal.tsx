@@ -34,7 +34,7 @@ export default function SelectStudentModal({
 
 const filteredStudents = selectedGrade === "All" 
     ? students 
-    : students?.filter((s) => s.grades?.[0]?.name === selectedGrade) || [];
+    : students?.filter((s) => s.active_grade?.[0]?.name === selectedGrade) || [];
 
   const handleStart = () => {
     if (!selectedStudent || !testType) return;
@@ -113,7 +113,7 @@ const filteredStudents = selectedGrade === "All"
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold text-sm">{student.name}</p>
-                      <p className="text-xs opacity-70">{student.grades?.[0]?.name || 'No Grade'}</p>
+                      <p className="text-xs opacity-70">{student.active_grade?.[0]?.name || 'No Grade'}</p>
                     </div>
                   </button>
                 ))
@@ -154,7 +154,7 @@ const filteredStudents = selectedGrade === "All"
                   </div>
                   <div className="flex-1">
                     <p className="font-bold text-slate-800">{selectedStudentData.name}</p>
-                    <p className="text-xs text-slate-600">{selectedStudentData.grades?.[0]?.name || 'No Grade'}</p>
+                    <p className="text-xs text-slate-600">{selectedStudentData.active_grade?.[0]?.name || 'No Grade'}</p>
                   </div>
                 </div>
               </div>

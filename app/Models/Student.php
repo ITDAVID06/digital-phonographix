@@ -14,20 +14,28 @@ class Student extends Model
     public function grades()
     {
         return $this->belongsToMany(Grade::class, 'grade_student')
+            ->withPivot('active')
             ->withTimestamps();
+    }
+
+    public function activeGrade()
+    {
+        return $this->belongsToMany(Grade::class, 'grade_student')
+            ->withPivot('active')
+            ->wherePivot('active', true);
     }
 
     public function preTests()
     {
         return $this->belongsToMany(PreTest::class, 'pre_test_student')
-            ->withPivot(['user_id', 'raw_score', 'calculated_score'])
+            ->withPivot('user_id', 'grade_id', 'raw_score', 'calculated_score')
             ->withTimestamps();
     }
 
     public function postTests()
     {
         return $this->belongsToMany(PostTest::class, 'post_test_student')
-            ->withPivot(['user_id', 'raw_score', 'calculated_score'])
+            ->withPivot('user_id', 'grade_id', 'raw_score', 'calculated_score')
             ->withTimestamps();
     }
 }

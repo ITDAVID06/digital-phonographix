@@ -13,7 +13,7 @@ import SelectStudentModal from '@/components/modal/SelectStudentModal';
 export interface Student {
   id: number;
   name: string;
-  grades: Array<{
+  active_grade: Array<{
     id: number;
     name: string;
     multiplier: string;

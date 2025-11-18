@@ -32,24 +32,33 @@ class CodeKnowledgeTestController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'variant'            => 'required|in:pretest,posttest',
-            'student_id'         => 'required|exists:students,id',
-            'results'            => 'required|array',
-            'results.*.variant'  => 'required|in:pretest,posttest',
-            'results.*.grapheme' => 'required|string',
-            'results.*.known'    => 'required|boolean',
-            'results.*.examples' => 'nullable|string',
-            'results.*.timestamp'=> 'required|integer',
+            'variant'             => 'required|in:pretest,posttest',
+            'student_id'          => 'required|exists:students,id',
+            'results'             => 'required|array',
+            'results.*.variant'   => 'required|in:pretest,posttest',
+            'results.*.grapheme'  => 'required|string',
+            'results.*.known'     => 'required|boolean',
+            'results.*.examples'  => 'nullable|string',
+            'results.*.timestamp' => 'required|integer',
         ]);
 
         $student = Student::with('grades')->findOrFail($data['student_id']);
+
+        // 🔎 Use the active grade from the grade_student pivot
+        $activeGrade = $student->activeGrade()->first();
+
+        if (! $activeGrade) {
+            abort(422, 'Student has no active grade assigned.');
+        }
+
+        $gradeId = $activeGrade->id;
 
         // RAW SCORE: 1 point per known grapheme
         $rawScore = collect($data['results'])
             ->where('known', true)
             ->count();
 
-        // Clamp just in case (max items in STUDENT_ORDER)
+        // Clamp just in case (max items in STUDENT_ORDER from the frontend)
         $maxItems = count($data['results']);
         $rawScore = max(0, min($maxItems, $rawScore));
 
@@ -59,11 +68,13 @@ class CodeKnowledgeTestController extends Controller
                 ['multiplier' => 2.0] // from your seeder spec
             );
 
-            $calculated = $this->calculateScore($rawScore, $test->multiplier, $student);
+            // Only test multiplier here (grade multiplier is applied later in composite view)
+            $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
             $student->preTests()->syncWithoutDetaching([
                 $test->id => [
                     'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,   // ✅ persist grade_id
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
                 ],
@@ -74,11 +85,12 @@ class CodeKnowledgeTestController extends Controller
                 ['multiplier' => 2.0]
             );
 
-            $calculated = $this->calculateScore($rawScore, $test->multiplier, $student);
+            $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
             $student->postTests()->syncWithoutDetaching([
                 $test->id => [
                     'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,   // ✅ persist grade_id
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
                 ],
@@ -89,13 +101,12 @@ class CodeKnowledgeTestController extends Controller
     }
 
     /**
-     * Compute final score with test + grade multipliers.
+     * Test-level score only: raw × test multiplier.
+     * Grade multiplier is handled later in the composite reading score.
      */
-    protected function calculateScore(int $rawScore, float $testMultiplier, Student $student): float
+    protected function calculateScore(int $rawScore, float $testMultiplier): float
     {
-        $gradeMultiplier = optional($student->grades()->first())->multiplier ?? 1.00;
-
-        $score = $rawScore * $testMultiplier * $gradeMultiplier;
+        $score = $rawScore * $testMultiplier;
 
         return round($score, 2);
     }

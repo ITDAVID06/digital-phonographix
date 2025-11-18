@@ -28,7 +28,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::with('grades')
+        $students = Student::with('activeGrade')
             ->orderBy('name')
             ->get();
             
