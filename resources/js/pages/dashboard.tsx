@@ -10,10 +10,14 @@ import React from 'react';
 import AddStudentModal from '@/components/modal/AddStudentModal';
 import SelectStudentModal from '@/components/modal/SelectStudentModal';
 
-interface Student {
+export interface Student {
   id: number;
   name: string;
-  grade: string;
+  grades: Array<{
+    id: number;
+    name: string;
+    multiplier: string;
+  }>;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [

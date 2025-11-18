@@ -5,12 +5,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { router } from "@inertiajs/react";
 import { ChevronDown, X, User, BookOpen } from 'lucide-react';
-
-interface Student {
-  id: number;
-  name: string;
-  grade: string;
-}
+import { Student } from "@/pages/dashboard";
 
 interface SelectStudentModalProps {
   open: boolean;
@@ -37,9 +32,9 @@ export default function SelectStudentModal({
     }
   }, [open]);
 
-  const filteredStudents = selectedGrade === "All" 
+const filteredStudents = selectedGrade === "All" 
     ? students 
-    : students?.filter((s) => s.grade === selectedGrade) || [];
+    : students?.filter((s) => s.grades?.[0]?.name === selectedGrade) || [];
 
   const handleStart = () => {
     if (!selectedStudent || !testType) return;
@@ -118,7 +113,7 @@ export default function SelectStudentModal({
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold text-sm">{student.name}</p>
-                      <p className="text-xs opacity-70">{student.grade}</p>
+                      <p className="text-xs opacity-70">{student.grades?.[0]?.name || 'No Grade'}</p>
                     </div>
                   </button>
                 ))
@@ -159,7 +154,7 @@ export default function SelectStudentModal({
                   </div>
                   <div className="flex-1">
                     <p className="font-bold text-slate-800">{selectedStudentData.name}</p>
-                    <p className="text-xs text-slate-600">{selectedStudentData.grade}</p>
+                    <p className="text-xs text-slate-600">{selectedStudentData.grades?.[0]?.name || 'No Grade'}</p>
                   </div>
                 </div>
               </div>

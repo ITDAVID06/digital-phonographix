@@ -28,8 +28,11 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = \App\Models\Student::orderBy('name')->get();
-        return \Inertia\Inertia::render('dashboard', [
+        $students = Student::with('grades')
+            ->orderBy('name')
+            ->get();
+            
+        return Inertia::render('dashboard', [
             'students' => $students,
         ]);
     }
