@@ -10,25 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CodeKnowledgeTestController extends Controller
 {
-    /**
-     * Store Code Knowledge Test result.
-     *
-     * Expected payload:
-     * {
-     *   "variant": "pretest" | "posttest",
-     *   "student_id": 1,
-     *   "results": [
-     *     {
-     *       "variant": "pretest",
-     *       "grapheme": "a",
-     *       "known": true,
-     *       "examples": "a as in apple",
-     *       "timestamp": 123456789
-     *     },
-     *     ...
-     *   ]
-     * }
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -44,41 +25,52 @@ class CodeKnowledgeTestController extends Controller
 
         $student = Student::with('grades')->findOrFail($data['student_id']);
 
-        // 🔎 Use the active grade from the grade_student pivot
         $activeGrade = $student->activeGrade()->first();
 
-        if (! $activeGrade) {
+        if (!$activeGrade) {
             abort(422, 'Student has no active grade assigned.');
         }
 
         $gradeId = $activeGrade->id;
 
-        // RAW SCORE: 1 point per known grapheme
         $rawScore = collect($data['results'])
             ->where('known', true)
             ->count();
 
-        // Clamp just in case (max items in STUDENT_ORDER from the frontend)
         $maxItems = count($data['results']);
         $rawScore = max(0, min($maxItems, $rawScore));
 
         if ($data['variant'] === 'pretest') {
             $test = PreTest::firstOrCreate(
                 ['test_name' => 'Code Knowledge Test'],
-                ['multiplier' => 2.0] // from your seeder spec
+                ['multiplier' => 2.0]
             );
 
-            // Only test multiplier here (grade multiplier is applied later in composite view)
             $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
-            $student->preTests()->syncWithoutDetaching([
-                $test->id => [
+            $existingRecord = $student->preTests()
+                ->where('pre_test_id', $test->id)
+                ->wherePivot('grade_id', $gradeId)
+                ->first();
+
+            if ($existingRecord) {
+                $student->preTests()->updateExistingPivot($test->id, [
                     'user_id'          => Auth::id(),
-                    'grade_id'         => $gradeId,   // ✅ persist grade_id
+                    'grade_id'         => $gradeId,
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
-                ],
-            ]);
+                    'updated_at'       => now(),
+                ], false);
+            } else {
+                $student->preTests()->attach($test->id, [
+                    'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,
+                    'raw_score'        => $rawScore,
+                    'calculated_score' => $calculated,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+            }
         } else {
             $test = PostTest::firstOrCreate(
                 ['test_name' => 'Code Knowledge Test'],
@@ -87,27 +79,37 @@ class CodeKnowledgeTestController extends Controller
 
             $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
-            $student->postTests()->syncWithoutDetaching([
-                $test->id => [
+            $existingRecord = $student->postTests()
+                ->where('post_test_id', $test->id)
+                ->wherePivot('grade_id', $gradeId)
+                ->first();
+
+            if ($existingRecord) {
+                $student->postTests()->updateExistingPivot($test->id, [
                     'user_id'          => Auth::id(),
-                    'grade_id'         => $gradeId,   // ✅ persist grade_id
+                    'grade_id'         => $gradeId,
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
-                ],
-            ]);
+                    'updated_at'       => now(),
+                ], false);
+            } else {
+                $student->postTests()->attach($test->id, [
+                    'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,
+                    'raw_score'        => $rawScore,
+                    'calculated_score' => $calculated,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+            }
         }
 
         return back()->with('success', 'Code knowledge test scores saved successfully.');
     }
 
-    /**
-     * Test-level score only: raw × test multiplier.
-     * Grade multiplier is handled later in the composite reading score.
-     */
     protected function calculateScore(int $rawScore, float $testMultiplier): float
     {
         $score = $rawScore * $testMultiplier;
-
         return round($score, 2);
     }
 }

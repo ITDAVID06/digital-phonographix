@@ -51,14 +51,32 @@ class BlendingTestController extends Controller
             // Only test multiplier here, no grade multiplier
             $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
-            $student->preTests()->syncWithoutDetaching([
-                $test->id => [
+            // Check if a record exists for this student, test, and current active grade
+            $existingRecord = $student->preTests()
+                ->where('pre_test_id', $test->id)
+                ->wherePivot('grade_id', $gradeId)
+                ->first();
+
+            if ($existingRecord) {
+                // Update existing record for the same grade
+                $student->preTests()->updateExistingPivot($test->id, [
                     'user_id'          => Auth::id(),
                     'grade_id'         => $gradeId,
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
-                ],
-            ]);
+                    'updated_at'       => now(),
+                ], false);
+            } else {
+                // Create new record for different grade
+                $student->preTests()->attach($test->id, [
+                    'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,
+                    'raw_score'        => $rawScore,
+                    'calculated_score' => $calculated,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+            }
         } else {
             $test = PostTest::firstOrCreate(
                 ['test_name' => 'Blending Test'],
@@ -67,14 +85,32 @@ class BlendingTestController extends Controller
 
             $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
-            $student->postTests()->syncWithoutDetaching([
-                $test->id => [
+            // Check if a record exists for this student, test, and current active grade
+            $existingRecord = $student->postTests()
+                ->where('post_test_id', $test->id)
+                ->wherePivot('grade_id', $gradeId)
+                ->first();
+
+            if ($existingRecord) {
+                // Update existing record for the same grade
+                $student->postTests()->updateExistingPivot($test->id, [
                     'user_id'          => Auth::id(),
                     'grade_id'         => $gradeId,
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
-                ],
-            ]);
+                    'updated_at'       => now(),
+                ], false);
+            } else {
+                // Create new record for different grade
+                $student->postTests()->attach($test->id, [
+                    'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,
+                    'raw_score'        => $rawScore,
+                    'calculated_score' => $calculated,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+            }
         }
 
         return back()->with('success', 'Blending test scores saved successfully.');

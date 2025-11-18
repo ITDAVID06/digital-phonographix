@@ -42,21 +42,21 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: Home,
     },
-    {
-        title: 'Pre-Test',
-        href: preTest(),
-        icon: NotebookPen,
-    },
-    {
-        title: 'Games',
-        href: games(),
-        icon: Gamepad2,
-    },
-    {
-        title: 'Post-Test',
-        href: postTest(),
-        icon: NotepadText,
-    },
+    // {
+    //     title: 'Pre-Test',
+    //     href: preTest(),
+    //     icon: NotebookPen,
+    // },
+    // {
+    //     title: 'Games',
+    //     href: games(),
+    //     icon: Gamepad2,
+    // },
+    // {
+    //     title: 'Post-Test',
+    //     href: postTest(),
+    //     icon: NotepadText,
+    // },
     {
         title: 'Users',
         href: '/users-management',

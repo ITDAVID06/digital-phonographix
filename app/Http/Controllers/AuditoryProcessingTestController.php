@@ -10,29 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuditoryProcessingTestController extends Controller
 {
-    /**
-     * Store a full Auditory Processing Test result.
-     *
-     * Expected payload:
-     * {
-     *   "variant": "pretest" | "posttest",
-     *   "student_id": 1,
-     *   "results": [
-     *     {
-     *       "variant": "pretest",
-     *       "part": 1 | 2 | 3,
-     *       "baseWord": "pim",
-     *       "removed": "p",
-     *       "prompt": "say pim w/o the 'p'",
-     *       "response": "im",
-     *       "expected": "im",
-     *       "isExactMatch": true,
-     *       "timestamp": 123456789
-     *     },
-     *     ...
-     *   ]
-     * }
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -51,41 +28,51 @@ class AuditoryProcessingTestController extends Controller
 
         $student = Student::with('grades')->findOrFail($data['student_id']);
 
-        // 🔎 Use the active grade from the grade_student pivot
         $activeGrade = $student->activeGrade()->first();
 
-        if (! $activeGrade) {
+        if (!$activeGrade) {
             abort(422, 'Student has no active grade assigned.');
         }
 
         $gradeId = $activeGrade->id;
 
-        // RAW SCORE: 1 point per correct item.
         $rawScore = collect($data['results'])
             ->where('isExactMatch', true)
             ->count();
 
-        // You currently have 3 + 3 + 4 = 10 items; clamp 0–10 just in case.
         $rawScore = max(0, min(10, $rawScore));
 
-        // NOTE: using "Auditory Processing Tests" (plural) to match seeder + composite controller
         if ($data['variant'] === 'pretest') {
             $test = PreTest::firstOrCreate(
                 ['test_name' => 'Auditory Processing Tests'],
                 ['multiplier' => 10.0]
             );
 
-            // Test-only multiplier here; grade multiplier is applied later in composite view
             $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
-            $student->preTests()->syncWithoutDetaching([
-                $test->id => [
+            $existingRecord = $student->preTests()
+                ->where('pre_test_id', $test->id)
+                ->wherePivot('grade_id', $gradeId)
+                ->first();
+
+            if ($existingRecord) {
+                $student->preTests()->updateExistingPivot($test->id, [
                     'user_id'          => Auth::id(),
-                    'grade_id'         => $gradeId,   // ✅ persist grade_id
+                    'grade_id'         => $gradeId,
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
-                ],
-            ]);
+                    'updated_at'       => now(),
+                ], false);
+            } else {
+                $student->preTests()->attach($test->id, [
+                    'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,
+                    'raw_score'        => $rawScore,
+                    'calculated_score' => $calculated,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+            }
         } else {
             $test = PostTest::firstOrCreate(
                 ['test_name' => 'Auditory Processing Tests'],
@@ -94,27 +81,37 @@ class AuditoryProcessingTestController extends Controller
 
             $calculated = $this->calculateScore($rawScore, (float) $test->multiplier);
 
-            $student->postTests()->syncWithoutDetaching([
-                $test->id => [
+            $existingRecord = $student->postTests()
+                ->where('post_test_id', $test->id)
+                ->wherePivot('grade_id', $gradeId)
+                ->first();
+
+            if ($existingRecord) {
+                $student->postTests()->updateExistingPivot($test->id, [
                     'user_id'          => Auth::id(),
-                    'grade_id'         => $gradeId,   // ✅ persist grade_id
+                    'grade_id'         => $gradeId,
                     'raw_score'        => $rawScore,
                     'calculated_score' => $calculated,
-                ],
-            ]);
+                    'updated_at'       => now(),
+                ], false);
+            } else {
+                $student->postTests()->attach($test->id, [
+                    'user_id'          => Auth::id(),
+                    'grade_id'         => $gradeId,
+                    'raw_score'        => $rawScore,
+                    'calculated_score' => $calculated,
+                    'created_at'       => now(),
+                    'updated_at'       => now(),
+                ]);
+            }
         }
 
         return back()->with('success', 'Auditory processing test scores saved successfully.');
     }
 
-    /**
-     * Test-level score only: raw × test multiplier.
-     * Grade multiplier is handled later when computing the composite reading score.
-     */
     protected function calculateScore(int $rawScore, float $testMultiplier): float
     {
         $score = $rawScore * $testMultiplier;
-
         return round($score, 2);
     }
 }
